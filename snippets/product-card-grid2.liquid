@@ -1,0 +1,154 @@
+{% if product.type == "Gift Card" %}
+{% else %}
+{% include "pro-pricing2" %}
+{% endif %}
+
+{% unless grid_item_width %}
+  {% assign grid_item_width = 'large--one-third medium-down--one-half' %}
+{% endunless %}
+
+{% unless current_collection == blank %}
+  {% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% assign show_sale = false %}
+
+{% assign sale_text = 'products.product.sale' | t %}
+
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+
+  {% if customer %}
+    {% if customer.tags contains "50off" or customer.tags contains "65off" or customer.tags contains "40off" %}
+      {% assign show_sale = false %}
+    {% else %}
+      {% assign show_sale = true %}
+    {% endif %}
+  {% else %}
+    {% assign show_sale = true %}
+  {% endif %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+{% assign new = false %}
+{% assign cominsoon = false %}
+{% for tag in product.tags %}
+  {% if tag contains 'Coming Soon' %}
+      {% assign cominsoon = true %}
+  {% endif %}
+  {% if tag contains 'new' %}
+      {% assign new = true %}
+  {% endif %}
+{% endfor %}
+{% unless grid_image_width %}
+  {%- assign grid_image_width = '600x600' -%}
+{% endunless %}
+
+
+
+      {% if settings.sitewidesale and settings.collections_show_sale_circle %}
+      	{% if retail %}
+      		{% unless nosale %}
+              <span class="badge badge--sale">
+                <span class="badge__text{% if sale_text.size > 7 %} badge__text--small{% endif %}">{{ 'products.product.sale' | t }}</span>
+              </span>
+      		{% endunless %}
+      	{% else %}
+      		{% if new %}
+              <span class="badge badge--sale" style="background-color: #dab570;">
+                <span class="badge__text">NEW</span>
+              </span>
+      		{% endif %}
+      	{% endif %}
+      {% endif %}
+      {% if new %}
+        <span class="badge badge--sale" style="background-color: #dab570;">
+          <span class="badge__text">NEW</span>
+        </span>
+      {% endif %}
+
+      {% if cominsoon == true %}
+        <span class="badge badge--sold-out">
+          <span class="badge__text{% if sold_out_text.size > 9 %} badge__text--small{% endif %}">Coming Soon</span>
+        </span>
+      {% elsif sold_out and settings.collections_show_sold_out_circle %}
+        <span class="badge badge--sold-out">
+          <span class="badge__text{% if sold_out_text.size > 9 %} badge__text--small{% endif %}">{{ 'products.product.sold_out' | t }}</span>
+        </span>
+      {% endif %}
+
+
+
+<div class="grid-view-item text-center{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+  <a class="grid-view-item__link animsition-link" href="{{ product.url | within: collection }}">
+    <div class="grid-view-item__image" id="{{product.id}}" style="background-image:url({{ product.featured_image.src | img_url: grid_image_width }});"></div>
+    <div class="h4 grid-view-item__title">{{ product.title }}</div>
+    <div class="grid-link__description">{{product.description | strip_html | truncate: 110 | escape }}</div>
+    {% if section.settings.show_vendor %}
+      <div class="grid-view-item__vendor">{{ product.vendor }}</div>
+    {% endif %}
+    <div class="grid-view-item__meta">
+      {% if pro %}
+        <span class="pro-price">{{ money_price }}</span>
+      	{% if retail %}
+      		{% unless nosale %}
+         	<span class="msrp-price retail">
+          		{{ money_pricebase }}
+        	</span>
+      		{% endunless %}
+      	{% else %}
+            {% if nopro %}
+                {% unless custlevel == settings.sitewidesaleamt %}
+                <span class="grid-link__description"><br/>retail pricing only</span>
+                {% endunless %}
+            {% else %}
+            <span class="msrp-price pro">
+              {{ money_pricebase }}
+            </span>
+            {% endif %}
+      	{% endif %}
+      {% else %}
+             	{% if webspecialtf or retailten or retailtwenty or retailthirty %}
+                	<span class="pro-price">{{ money_price }}</span>
+                	<span class="msrp-price">{{ money_pricebase }}</span>
+                   	{% elsif webspecialff %}
+                	<span class="pro-price">{{ money_price }}</span>
+                	<span class="msrp-price">{{ money_pricebase }}</span>
+                  {%else%}
+                <span id="ProductPrice" class="pro-price product-single__price" itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                  {{ money_pricebase }} {{money_price}}
+                </span>
+                  {%endif%}
+      {% endif %}
+            
+        {% if settings.product_reviews_enable %}
+          <br><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+        {% endif %}
+
+    </div>
+  </a>
+  {% capture colour_variant %}
+  {% for variant in product.variants %}
+  {% for option in variant.options %}
+  {% if product.options[forloop.index0] == 'Color' %}somestring,{% endif %}
+  {% endfor %}
+  {% endfor %}
+{% endcapture %}
+
+{% assign colour_variant_split = colour_variant | split: 'somestring,' %}
+{% assign colour_count = colour_variant_split.size | minus:1 %}
+{% if colour_count > 1 %}
+      {% if template contains 'index' %} 
+        {% if section.settings.show_color %}
+        {% include 'swatch' with 'Color' %}
+       {% endif %} 
+        {%else %}
+        {% include 'swatch' with 'Color' %}
+      {% endif %}
+{% endif %}
+</div>

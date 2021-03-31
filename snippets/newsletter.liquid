@@ -1,0 +1,117 @@
+<div class="klaviyo-form-QuxkTu"></div>
+
+<style>
+  .ePWtIi.ePWtIi {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    width: 100%;
+    float: left;
+    background-color: rgba(255, 255, 255, 0);
+    background-position-y: 50%;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    border-radius: 2px;
+    border-style: none;
+    border-width: 0px;
+    border-color: rgb(0, 0, 0);
+    background-repeat: no-repeat;
+}
+  
+  .kwGIvD.kwGIvD {
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0px 6px;
+    flex: 1 0 0px;
+}
+  
+  .site-footer__newsletter { width:100%;} 
+</style>
+{% comment %}
+{% capture newsletter_title %}
+  {% if section.settings.subhead %}<h5>{{ section.settings.subhead }}</h5>{% endif %}
+  <label for="Email" class="h4 news-heading">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+     <h4 class="title-newsletter">Sign up for promotions</h4>
+
+{% endcapture %}
+
+{% if settings.newsletter_action_url != blank %}
+  <form class="mailing-list-signup-form row align-items-center" action="{{ settings.newsletter_action_url }}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+
+    {% if newsletter_alone %}
+      <div class="col-md-30">
+    {% endif %}
+
+    {{ newsletter_title }}
+
+    {% if newsletter_alone %}
+      </div>
+      <div class="col-md-30">
+    {% endif %}
+
+    <div class="input-group">
+      <input class="mailing-list-signup-form-email"
+        name="EMAIL"
+        id="Email"
+        type="email"
+        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+        value="{% if customer %}{{ customer.email }}{% endif %}"
+        aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}" />
+      <span class="input-group__btn">
+        <button type="submit" class="btn btn--secondary newsletter__submit" name="commit" id="Subscribe">
+          <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+        </button>
+      </span>
+    </div>
+
+    {% if newsletter_alone %}
+      </div>
+    {% endif %}
+
+  </form>
+{% else %}
+  {% form 'customer', class:'contact-form row align-items-center' %}
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully? %}
+      <p class="form--success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+    {% else %}
+
+      {% if newsletter_alone %}
+        <div class="col-md-30">
+      {% endif %}
+
+      {{ newsletter_title }}<br>
+      {% if newsletter_alone %}
+        </div>
+        <div class="col-md-30">
+      {% endif %}
+
+        <div class="input-group">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="email"
+            name="contact[email]"
+            id="Email"
+            class="input-group__field newsletter__input"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+            autocorrect="off"
+            autocapitalize="off">
+          <span class="input-group__btn news-btn-footer">
+            <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe">
+              <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+            </button>
+          </span>
+        </div>
+
+      {% if newsletter_alone %}
+        </div>
+      {% endif %}
+
+    {% endif %}
+  {% endform %}
+{% endif %}
+{% endcomment %}

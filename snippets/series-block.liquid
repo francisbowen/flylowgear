@@ -1,0 +1,20 @@
+<div class="series-bottom-mage" style="background-image: url('{{ section.settings.image | img_url: 'master' }}');">
+    <div class="container">
+        <h2>{{ section.settings.title }}</h2>
+    </div>
+</div>
+
+<div class="container-fluid" style="padding:0">
+  <div class="row"> {% for block in section.blocks %}
+    <div class="col-md-20">
+      <div class="link-card -haslink -middle">
+        <div class="bg-img" style="background-image: url('{{ block.settings.image | img_url: '500x500' }}')"> </div>
+        <div class="caption">
+          <h4 class="heading">{{ block.settings.title}}</h4>
+          <p class="subtitle"></p>
+          <a href="{{ block.settings.link}}" class="btn -imagebtn"> {{ block.settings.button}}  </a></div>
+      </div>
+    </div>
+    {% endfor %} 
+  </div>
+</div>

@@ -1,0 +1,57 @@
+{%- assign review_rating = false -%}
+{% if product.metafields.spr.reviews %}
+  {% capture review_data %}{{ product.metafields.spr.reviews }}{% endcapture %}
+
+  {%- assign rating_keyword = '"ratingValue":' -%}
+  {%- assign rd_a1 = review_data | split: rating_keyword -%}
+  {%- assign rd_a2 = rd_a1[1] | split: "," -%}
+  {%- assign rd_a3 = rd_a2[0] | replace: '"', "" -%}
+  {%- assign review_rating = rd_a3 | plus: 1 | minus: 1 -%}
+
+
+  {%- assign count_keyword = '"reviewCount":' -%}
+  {%- assign rd_a1 = review_data | split: count_keyword -%}
+  {%- assign rd_a2 = rd_a1[1] | split: "," -%}
+  {%- assign rd_a3 = rd_a2[0] | replace: '"', "" -%}
+  {%- assign review_count = rd_a3 | plus: 1 | minus: 1 -%}
+{% endif %}
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title | replace: '"','&quot;' }}",
+  "image": [{%for image in product.images %}
+  "{{ image.src | img_url: 'grande' }}"{% unless forloop.last%},{%endunless%}
+  {%endfor%}],
+  "description": {{ product.description | strip_html | json }},
+  "sku": "{{ product.selected_or_first_available_variant.sku }}",
+  "mpn": "{{ product.selected_or_first_available_variant.sku }}",
+  "brand": {
+    "@type": "Thing",
+    "name": "{{ product.vendor }}"
+  },
+  {%- if review_rating %}
+  "aggregateRating": {
+     "@type": "AggregateRating",
+     "ratingValue": "{{ review_rating }}",
+     "reviewCount": "{{ review_count }}"
+  },
+ {%- endif %}
+  "offers": {
+    "@type": "Offer",
+      "url": "{{ shop.url }}{{ product.url }}",
+    "priceCurrency": "{{ shop.currency }}",
+    "price": "{{ product.selected_or_first_available_variant.price | money_without_currency | remove: "," }}",
+    "priceValidUntil": "{{ "now" | date: "%s" | plus: 864000 | date: "%b %d, %Y" }}",
+    "itemCondition": "http://schema.org/NewCondition",
+    "availability": "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+    "seller": {
+      "@type": "Organization",
+      "name": "{{shop.name}}"
+    }
+  }
+}
+</script>

@@ -1,0 +1,184 @@
+{% if template == 'page.series' or  template == 'page.series-2' %}
+<div id="video-channel" class="pagehero westward-hero" style="background-image: url('{{section.settings.video_image | img_url: '1500x' }}')">
+  <div class="video-wrapper">
+    <iframe id="vimeo" src="" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen"></iframe>
+  </div>
+  <div class="holder">
+    <a class="westward-video" data-framesrc="{{section.settings.video_id}}">
+      <img class="play-icon" src="{{'play-icon.png' | asset_url}}"  alt="Play Westward Trailer">
+    </a>
+  </div>
+   <div class="container">
+  <div class="row">
+    <div class="col-md-45 offset-md-3">
+   <h3 class="video-title">{{section.settings.video_title}}</h3>
+ </div>
+</div>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+ <div class="col-md-40 offset-md-10">
+   <div class="content series-center">
+    <h1>{{page.title}}</h1>
+     {{page.content}}
+   </div>
+  </div>
+</div>
+</div>
+{% endif %}
+{% if template == 'page.episode' or  template == 'page.episode-2' %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="newsletter-wrap text-center">
+      <div class="series-form-wrap">
+      <div class="newsletter-item">
+      <h2>WHEN IS THE NEXT WESTWARD EPISODE?</h2>
+      <h4>Sign up now so you are one of the 1st to know.</h4>
+    </div>
+     <div class="col-md-30 sign-up-item">
+{% capture newsletter_title %}
+  {% if section.settings.subhead %}<h5>{{ section.settings.subhead }}</h5>{% endif %}
+  <label for="Email" class="h4 news-heading">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+{% endcapture %}
+
+{% if settings.newsletter_action_url != blank %}
+  <form class="mailing-list-signup-form row align-items-center" action="{{ settings.newsletter_action_url }}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+
+    {% if newsletter_alone %}
+      <div class="col-md-30">
+    {% endif %}
+
+    {{ newsletter_title }}
+
+    {% if newsletter_alone %}
+      </div>
+      <div class="col-md-30">
+    {% endif %}
+
+    <div class="input-group">
+      <input class="mailing-list-signup-form-email"
+        name="EMAIL"
+        id="Email"
+        type="email"
+        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+        value="{% if customer %}{{ customer.email }}{% endif %}"
+        aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}" />
+      <span class="input-group__btn">
+        <button type="submit" class="btn btn--secondary newsletter__submit" name="commit" id="Subscribe">
+          <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+        </button>
+      </span>
+    </div>
+
+    {% if newsletter_alone %}
+      </div>
+    {% endif %}
+
+  </form>
+{% else %}
+  {% form 'customer', class:'contact-form row align-items-center' %}
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully? %}
+      <p class="form--success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+    {% else %}
+
+      {% if newsletter_alone %}
+        <div class="col-md-30">
+      {% endif %}
+
+
+      {% if newsletter_alone %}
+        </div>
+        <div class="col-md-30">
+      {% endif %}
+
+        <div class="input-group">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="email"
+            name="contact[email]"
+            id="Email"
+            class="input-group__field newsletter__input"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+            autocorrect="off"
+            autocapitalize="off">
+          <span class="input-group__btn news-btn-footer">
+            <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe">
+              <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+            </button>
+          </span>
+        </div>
+
+      {% if newsletter_alone %}
+        </div>
+      {% endif %}
+
+    {% endif %}
+  {% endform %}
+{% endif %}
+  </div>
+    </div>
+  </div>
+    
+  </div>
+</div>
+{% endif %}
+{% if template == 'page.episode' or template == 'page.episode-2' %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-40 offset-md-10 episode-text text-center">
+      <h2 class="subtitle">{{ section.settings.title}}</h2>
+      <p>{{section.settings.text}}</p>
+   </div>
+  </div>
+</div>
+{% endif %}
+<div class="container">
+  {% assign all_series_tags = section.settings.tags | split: ", " %} {% for series_tag in all_series_tags %}
+  <div class="series_group">
+    <div class="series-item">
+      <h2>{{series_tag}}</h2>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      {% for block in section.blocks %} {% if series_tag == block.settings.tag %}
+      <div class="col-md-15 col-sm-30 episode-imag-mobile">
+        {% if block.settings.coming_soon %}
+          <div class="series-thumbnail series-coming-soon" style="background-image: url('{{ block.settings.image | img_url: 'large' }}')">
+            <div class="series-titles">
+              <h3 class="series-title">{{block.settings.title}}</h3>
+              <h4 class="series-subtitle">{{block.settings.episode}}</h4>
+            </div>
+            <div class="overlay-series overlay-series-coming-soon">
+              <h3>Coming<br />Soon</h3>
+            </div>
+          </div>        
+        {% else %}
+        <a href="{{ block.settings.episode_url }}">
+          <div class="series-thumbnail" style="background-image: url('{{ block.settings.image | img_url: 'large' }}')">
+            <div class="series-titles">
+              <h3 class="series-title">{{block.settings.title}}</h3>
+              <h4 class="series-subtitle">{{block.settings.episode}}</h4>
+            </div>
+            <div class="overlay-series">
+              <p><img class="" src="{{'play-icon.png' | asset_url}}"></p>
+            </div>
+          </div>
+        </a>
+        {% endif %}
+      </div>
+      {% endif%} {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+ <script>
+ $(".westward-video").click(function () {
+  $(".holder").hide();
+  $(".video-title").hide();
+  var t = $(this).attr("data-frameSrc"),
+   o = "https://player.vimeo.com/video/" + t + "?title=0&byline=0&portrait=0&autoplay=true";
+  $("#vimeo").attr("src", o), document.getElementById("video-channel").style.backgroundImage = "none", document.getElementById("video-channel").style.backgroundColor = "#000"
+ });
+</script>

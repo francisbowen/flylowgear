@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+  
+    {% for product in collections.spring-skiing-men.products %}
+   <div class="col-md-20">
+<a href="{{ product.url }}" style="font-size:25px;text-align:center;"><br>{{ product.title }}</a><br>
+
+<a href="{{product.url}}"><image src="{{ product | img_url: 'medium'}}<br>
+            "></a>
+  {{product.description}}<br>
+
+{{product.price  | money }}<br>
+
+
+
+  </div>
+   
+{% endfor %}
+</div>
+  </div>
+
+{% section 'home-3-blog' %}
