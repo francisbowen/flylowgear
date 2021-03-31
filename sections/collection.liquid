@@ -1,0 +1,232 @@
+<div class="container custom-padding-section section-padding-{{ section.settings.section_padding }}">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  {%- assign collection = collections[section.settings.collection] -%}
+
+  {% case section.settings.grid %}
+    {% when '2' %}
+      {%- assign grid_item_width = 'col-md-30' -%}
+      {%- assign image_size = '540x600' -%}
+    {% when '3' %}
+      {%- assign grid_item_width = 'col-md-20 col-sm-30' -%}
+      {%- assign image_size = '345x550' -%}
+    {% when '4' %}
+      {%- assign grid_item_width = 'col-md-15 col-sm-30' -%}
+      {%- assign image_size = '250x' -%}
+    {% when '5' %}
+      {%- assign grid_item_width = 'col-md-12 col-sm-30' -%}
+      {%- assign image_size = '195x' -%}
+  {% endcase %}
+
+  {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+
+  <div class="grid--view-items row {% if section.settings.text_layout == 'center' %}{% elsif section.settings.text_layout == 'right' %} offset-md-30{% endif %} text-{{ section.settings.text_align }}">
+    {% for product in collection.products limit: product_limit %}
+      <div class="grid__item {{ grid_item_width }}">
+        {% include 'product-card-grid', grid_image_width: image_size %}
+      </div>
+    {% else %}
+
+      {% for i in (1..product_limit) %}
+        <div class="grid__item {{ grid_item_width }}">
+          <div class="grid-view-item ">
+            <a href="#" class="grid-view-item__link">
+              <div class="grid-view-item__image">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+              <div class="grid-view-item__meta">
+                {% include 'product-price' %}
+              </div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+
+  {% if section.settings.show_view_all %}
+    <hr class="hr--invisible"></hr>
+    <div class="text-center">
+      <a href="{{ collection.url }}" class="btn">
+        {{ 'collections.general.view_all' | t }}
+      </a>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "3",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows",
+        "default": "2",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+          {
+            "type": "select",
+            "id": "text_layout",
+            "label": "Text Position",
+            "default": "center",
+            "options": [
+              {
+                "value": "left",
+                "label": "Text on Left"
+              },
+              {
+                "value": "center",
+                "label": "Text on Center"
+              },
+              {
+                "value": "right",
+                "label": "Text on right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text Aligment",
+            "default": "center",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left Aligned Text"
+              },
+              {
+                "value": "center",
+                "label": "Center Aligned Text"
+              },
+              {
+                "value": "right",
+                "label": "Right Aligned Text"
+              }
+            ]
+          },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendors",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price",
+        "label": "Show product prices",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_color",
+        "label": "Show product colors",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show 'View all' button",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "section_padding",
+        "label": "Section padding",
+        "default": "medium",
+        "options": [
+          {
+            "label": "None",
+            "value": "none"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "x-large"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

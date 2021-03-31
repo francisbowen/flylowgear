@@ -1,0 +1,228 @@
+
+{% for block in section.blocks %}
+  {% if page.handle == block.settings.page %}
+    <div id="video-channel" class="pagehero westward-hero" style="background-image: url('{{block.settings.video_image | img_url: '1500x' }}')">
+      <div class="video-wrapper">
+        <iframe id="vimeo" src="" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen"></iframe>
+      </div>
+      <div class="holder">
+        <a class="westward-video" data-framesrc="{{block.settings.video.id}}"  data-frametype="{{block.settings.video.type}}">
+          <img class="play-icon" src="{{'play-icon.png' | asset_url}}" alt="Play Westward Trailer">
+        </a>
+      </div>
+    </div>
+    {% break %}
+  {% endif%}
+{% endfor %}
+  <div class="westward-pagination">
+    <div class="container-fluid">
+    <div class="flex-img-block">
+      <div class="row">
+        <div class="col-md-60">
+        <div class="episode-title-left">
+          <h4 class="episode-title">{{page.title}}</h4>
+        </div>
+          <div class="episode-select">
+            <h5><a href="{{section.settings.button_link}}">{{section.settings.button_label}}</a></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="flex-img-block">
+    <div class="row">
+      {% for block in section.blocks %} {% if page.handle == block.settings.page %}
+      <div class="text-wrapper col-md-35 ">
+        <p>{{page.content}}</p>
+      </div>
+      <div class="img-wrapper no-gutter col-md-25">
+        <img class="img" src="{{block.settings.header-image | img_url: '1500x' }}"> {% break %} {% endif%} {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="block-image">
+    <div class="container-fluid">
+      <div class="row gallery-row-leap">
+        {%- assign image_count = 0 -%}
+        {% for block in section.blocks %}
+          {% if page.handle == block.settings.page %}
+            {% for i in (1..10) %}
+              {% capture curr_image %}image-center{{ i }}{% endcapture %}
+              {% if block.settings[curr_image] !=blank %}
+                <div class="col-md-60 nopadding episode-image" style=" background-image: url('{{ block.settings[curr_image]  | img_url: '1500x' }}');"></div>
+              {% endif %}
+        	  {%- assign image_count = image_count | plus: 1 -%}
+            {% endfor %}
+            {% break %}
+          {% endif%}
+        {% endfor %}
+      </div>
+      {% if image_count > 1 %}
+        <script>
+          $(window).load(function(){
+            $('.gallery-row-leap').slick({
+              infinite: true,
+              dots: false,
+              auto: true,
+              autoplaySpeed: 6000,
+              speed: 1000,
+              fade: true
+            });
+          });
+        </script>
+      {% endif %}
+    </div>
+  </div>
+  <div class="image-section">
+    <div class="container-fluid">
+    <div class="flex-img-block">
+      <div class="row">
+        {% for block in section.blocks %} {% if page.handle == block.settings.page %} {% if block.settings.bottom-image-left !=blank %}
+        <div class="col-md-25 image-col"><img src="{{block.settings.bottom-image-left | img_url: '1500x' }}"></div>
+        {% endif %} {% if block.settings.text !=blank %}
+        <div class="col-md-35 text-col">{{block.settings.text}} </div>
+        {% endif %} {% break %} {% endif%} {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+  <script>
+   $(".westward-video").click(function () {
+     $(".holder").hide();
+     if($(this).attr("data-frametype") == 'youtube') {
+       var t = $(this).attr("data-frameSrc"),
+       o = "https://www.youtube.com/embed/"+t+"?autoplay=1&loop=1&controls=0&modestbranding=1&rel=0";
+       $("#vimeo").attr("src", o), document.getElementById("video-channel").style.backgroundImage = "none", document.getElementById("video-channel").style.backgroundColor = "#000"
+
+     } else {
+       var t = $(this).attr("data-frameSrc"),
+       o = "https://player.vimeo.com/video/" + t + "?title=0&byline=0&portrait=0&autoplay=true";
+       $("#vimeo").attr("src", o), document.getElementById("video-channel").style.backgroundImage = "none", document.getElementById("video-channel").style.backgroundColor = "#000"
+     }
+
+   });
+  </script>
+  {% schema %}
+    {
+      "name": "Leap",
+      "class": "index-section",
+      "settings": [
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "name": "Episode Content",
+          "settings": [
+          {
+              "type": "text",
+              "id": "title",
+              "label": "Title",
+              "default": "Season 1 / Episode 1"
+          },
+          {
+              "type": "page",
+              "id": "page",
+              "label": "Select Episode Page"
+          },
+          {
+              "type": "header",
+              "content": "Top Video Section"
+          },
+          {
+              "type": "image_picker",
+              "id": "video_image",
+              "label": "Vidoe Background Image"
+          },
+          {
+              "type": "video_url",
+              "id": "video",
+              "label": "Video Link",
+              "accept": ["youtube", "vimeo"]
+		  },
+          {
+              "type": "header",
+              "content": "Right Side Image"
+          },
+          {
+              "type": "image_picker",
+              "id": "header-image",
+              "label": "Image on Right"
+          },
+          {
+              "type": "header",
+              "content": "Full Width Images"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center1",
+              "label": "Center Full Width Image 1"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center2",
+              "label": "Center Full Width Image 2"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center3",
+              "label": "Center Full Width Image 3"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center4",
+              "label": "Center Full Width Image 4"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center5",
+              "label": "Center Full Width Image 5"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center6",
+              "label": "Center Full Width Image 6"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center7",
+              "label": "Center Full Width Image 7"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center8",
+              "label": "Center Full Width Image 8"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center9",
+              "label": "Center Full Width Image 9"
+          },
+          {
+              "type": "image_picker",
+              "id": "image-center10",
+              "label": "Center Full Width Image 10"
+          },
+          {
+              "type": "header",
+              "content": "Bottome Text With Left Image"
+          },
+          {
+              "type": "image_picker",
+              "id": "bottom-image-left",
+              "label": "Bottom Image Left"
+          },
+          {
+              "type": "richtext",
+              "id": "text",
+              "label": "Description"
+              
+          }
+         
+          ]
+        }
+      ]
+    }
+  {% endschema %}

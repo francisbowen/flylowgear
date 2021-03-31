@@ -1,0 +1,519 @@
+{%- assign video_type = false -%}
+{%- assign video_id = false -%}
+{% if article.image.alt contains 'youtube' or article.image.alt contains 'vimeo' %}
+{%- assign image_alt = article.image.alt | split: '--' -%}
+{%- assign video_type = image_alt[0] -%}
+{%- assign video_id = image_alt[1] -%}
+{% endif %}
+{% if blog.handle == 'athletes' %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-40 offset-md-10">
+        <div class="athletes-section">
+          {{article.content}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include 'athletes' %}      
+{% else %}
+ <div class="article-hero__image parallax-background"{% if article.image %} style="background-image: url({{ article.image.src | img_url: '2000x' }});"{% endif %}>
+    {% if video_type and video_id %}
+    <div class="holder">
+      <a class="westward-video article-video-icon">
+        <img class="play-icon" src="{{'play-icon.png' | asset_url}}"  alt="Play Westward Trailer">
+      </a>
+    </div>
+    {% if video_type == 'youtube' %}
+    <div class="video-wrapper article-video">
+      <div id="ytplayer"></div>
+    </div>
+    {% elsif video_type == 'vimeo' %}
+      <div class="video-wrapper article-video">
+        <iframe src="https://player.vimeo.com/video/{{ video_id }}?autoplay=0&loop=1&title=1&byline=0&portrait=0&controls=1" frameborder="0" allow="autoplay; fullscreen;" allowfullscreen></iframe>
+      </div>
+    {% endif %}
+    {% endif %}
+    <div class="section-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-40 offset-md-10">
+            <div class="article-title-top">
+              <h1 class="article__title">{{ article.title }}</h1>
+            </div>
+          </div>
+          <div class="col-md-30 offset-md-10">
+            {% if section.settings.blog_show_date %}
+              <span class="article__date">
+                {{ article.published_at | time_tag: format: 'month_day_year' }}
+              </span>
+            {% endif %}
+            {% if section.settings.blog_show_author %}
+              <span class="article__author">{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+            {% endif %}
+          </div>
+          <div class="col-md-10 text-right">
+            {% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-40 offset-md-10">
+        <div class="rte" itemprop="articleBody">
+          <div class="article-content">
+            {% assign article_parts = article.content | split: '<h6>' %}
+              {% for article_part in article_parts %}
+                {% if article_part != blank %}
+                  {% if article_part contains '</h6>' %}
+                    {%- assign article_content_check = article_part | split: '</h6>' -%}
+                    {% if article_content_check[0] == 'GALLERY' %}
+                      {%- assign art_excerpts = article.excerpt | split: 'src="' -%}
+            
+                      {%- assign art_excerpts_caption = article.excerpt | split: 'alt="' -%}
+
+            			{% for art_excerpt in art_excerpts_caption %}
+            
+            			{%- assign img_parts = art_excerpt | split: '"' -%}
+            				{% if forloop.index == 1%}
+                            {%- assign title1 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==2%}
+                            {%- assign title2 = img_parts[0] -%}
+           					{% endif %}
+                            {% if forloop.index ==3%}
+                            {%- assign title3 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==4%}
+                            {%- assign title4 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==5%}
+                            {%- assign title5 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==6%}
+                            {%- assign title6 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==7%}
+                            {%- assign title7 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==8%}
+                            {%- assign title8 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==9%}
+                            {%- assign title9 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==10%}
+                            {%- assign title10 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==11%}
+                            {%- assign title11 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==12%}
+                            {%- assign title12 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==13%}
+                            {%- assign title13 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==14%}
+                            {%- assign title14 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==15%}
+                            {%- assign title15 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==16%}
+                            {%- assign title16 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==18%}
+                            {%- assign title18 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==19%}
+                            {%- assign title19 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==20%}
+                            {%- assign title20 = img_parts[0] -%}
+           					{% endif %}
+            				{% if forloop.index ==21%}
+                            {%- assign title21 = img_parts[0] -%}
+           					{% endif %}
+            
+            		{% endfor %}
+            {% capture 'article-gallery' %}
+            <h6>Gallery</h6>
+                      <div class="article--gallery_column">
+                        <div class="row mb-4">
+                          {% for art_excerpt in art_excerpts %}
+                            {%- assign img_parts = art_excerpt | split: '"' -%}
+                            {%- assign img_url = img_parts[0] -%}
+                            {% unless forloop.first %}<a title="{% if forloop.index == 1%}{{title1}}{% endif %}{% if forloop.index ==2%}{{title2}}{% endif %}{% if forloop.index ==3%}{{title3}}
+           					{% endif %} {% if forloop.index ==4%}{{title4}}{% endif %}
+                              
+            				{% if forloop.index ==5%}{{title5}}{% endif %}
+                              
+            				{% if forloop.index ==6%}{{title6}}{% endif %}
+                              
+            				{% if forloop.index ==7%}{{title7}}{% endif %}
+            				{% if forloop.index ==8%}{{title8}}{% endif %}
+            				{% if forloop.index ==9%}{{title9}}{% endif %}
+            				{% if forloop.index ==10%}{{title10}}{% endif %}
+            				{% if forloop.index ==11%}{{title11}}{% endif %}
+            				{% if forloop.index ==12%}{{title12}}{% endif %}
+            				{% if forloop.index ==13%}{{title13}}{% endif %}
+            				{% if forloop.index ==14%}{{title14}}{% endif %}
+            				{% if forloop.index ==15%}{{title15}}{% endif %}
+            				{% if forloop.index ==16%}{{title16}}{% endif %}
+            				{% if forloop.index ==17%}{{title17}}{% endif %}
+            				{% if forloop.index ==18%}{{title18}}{% endif %}
+            				{% if forloop.index ==19%}{{title19}}{% endif %}
+            				{% if forloop.index ==20%}{{title20}}{% endif %}
+            				{% if forloop.index ==21%}{{title21}}{% endif %}
+                              
+                              " class="col" style="background-image:url({{ img_url }})" href="{{ img_url }}"></a>{% endunless %}
+                            {% if forloop.index == 4 %}
+                              
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+            {% endcapture %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% if article.excerpt != blank %}
+              <!-- <div class="article-excerpt">{{ article.excerpt }}</div> -->
+            {% endif %}
+            {%- assign article_content_parts = article.content | split: '<h6>PRODUCT</h6>' -%}
+            {% for article_content_part in article_content_parts %}
+            {%- assign article_content_part = article_content_part | replace: '<h6>GALLERY</h6>', article-gallery -%}
+            {%- assign product_callout_align = 'callout--right' -%}
+              {% if article_content_part contains '<h6>END PRODUCT</h6>' %}
+            	{%- assign product_callout_align = 'callout--right' -%}
+                {% assign prod_handles = '' %}
+            	{%- assign proudct_callout_parts = article_content_part | split: '<h6>END PRODUCT</h6>' -%}
+            	{% for product_callout_part in proudct_callout_parts %}
+            	  {% if forloop.first %}
+            		{%- assign prods_array = product_callout_part | split: '<span>' -%}
+            		{% for prods_part in prods_array %}
+            		  {% if prods_part contains '</span>' %} 
+                        {%- assign prod_split = prods_part | split: '</span>' -%}
+                        {% capture prod_handles %}{{ prod_handles }},{{ prod_split[0] | strip | handleize }}{% endcapture %}
+            		  {% elsif forloop.first %}
+                        {%- assign prod_align_check = prods_part | split: 'align-' -%}
+                        {%- assign caption_search = prod_align_check[1] | slice: 0, 3 -%}
+            			{% if prod_align_check[1] != blank and caption_search == 'left' %}
+            			  {%- assign product_callout_align = 'callout--left' -%}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+            		{%- assign prod_handle_array = prod_handles | remove_first: ',' | split: ',' -%}
+                    {%- assign prod_size = prod_handle_array.size | modulo: 3 -%}
+            		{% if prod_handle_array.size > 0 %}
+                      <div class="product-callout--row product-callout--row_{{ prod_size }} {{ product_callout_align }} row">
+                        {% for prod_handle in prod_handle_array -%}
+                          {%- assign prod = all_products[prod_handle] -%}
+                          {% assign callout_col = 60 | divided_by: prod_handle_array.size %}
+                          {% if callout_col > 30 %}{% assign callout_col = '30 offset-md-15' %}{% endif %}
+                          <div class="product-callout callout col-md-{{ callout_col }}">
+                            <div class="product-callout--spacing">
+                              <h5 class="title">{{ prod.title }}</h5>
+                              <hr />
+                              <div class="proudct-callout--image">
+                                {{ prod.featured_image | img_url: '800x400' | img_tag }}
+                              </div>
+                              <div class="product-callout--content">
+                                {%- assign prod_description = prod.description | split: '<!-- split -->' -%}
+                                {%- assign prod_description_cut = prod_description[0] | remove: '</p>' | split: '<p>' -%}
+                                {% for prod_short in prod_description_cut %}
+                                  {%- assign empty_p = prod_short | strip -%}
+                                  {% unless empty_p == blank %}
+                                    {{ empty_p }}
+                                    {% break %}
+                                  {% endunless %}
+                                {% endfor %}
+                                {% if prod_description[1] %}
+                                  <div class="product-callout--content-features">
+                                    <p class="subtitle"><strong>Features</strong></p>
+                                    {{ prod_description[1] }}
+                                  </div>
+                                {% endif %}
+                              </div>
+                              <a class="btn" href="{{ prod.url }}">Buy Now</a>
+                            </div>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% else %}
+                    {% include 'article--image_split', article_part: product_callout_part %}
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+            	{% include 'article--image_split', article_part: article_content_part %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  {% if blog.next_article or blog.previous_article %}
+    <div class="container article--next_prev">
+      <div class="row">
+        <div class="col-60">
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <!-- START post article BAR -->
+        <div class="col-60">
+          <div class="row">
+            <div class="col-60">
+              <h3>Read Next</h3>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            {% if blog.next_article %}
+              {% include 'blog-grid', next_or_prev: blog.next_article %}
+            {% endif %}
+            {% if blog.previous_article %}
+              {% include 'blog-grid', next_or_prev: blog.previous_article %}
+            {% endif %}
+          </div>
+        </div>
+        <!-- END post article BAR -->
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+
+<style>
+  .parallax-background {
+    background-image: url('{{ article.image.src | img_url: '2000x' }}');
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+
+    -moz-transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+</style>
+
+<script>
+$('.article-slider').slick({
+              infinite: true,
+              dots: false,
+              auto: true,
+              autoplay:true,
+              autoplaySpeed: 6000,
+              speed: 1000,
+              fade: true
+            });
+
+
+  $.fn.isOnScreen = function(){
+    
+    var win = $(window);
+
+    var viewport = {
+      top : win.scrollTop(),
+      left : win.scrollLeft()
+    };
+    viewport.right = viewport.left + win.width();
+    viewport.bottom = viewport.top + win.height();
+
+    var bounds = this.offset();
+    bounds.right = bounds.left + this.outerWidth();
+    bounds.bottom = bounds.top + this.outerHeight();
+
+    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+
+  };
+
+  $(function() {
+    var $el = $('.parallax-background');
+    $(window).on('scroll', function () {
+      $el.each(function(){
+        var $this = $(this);
+        if($this.isOnScreen()) {
+          var scroll = $this.offset().top - $(window).scrollTop();
+          $this.css({
+            'background-position':'50% '+(-.3*scroll)+'px'
+          });
+        }
+      });
+    });
+  });
+</script>
+
+
+<script>
+  $( document ).ready(function() {
+    $('.rte p img').closest('p').addClass('imgstretch');
+    $('.rte div img').closest('p').addClass('imgstretch');
+    console.log( "stretch armstrong!" );
+  });
+  $(window).load(function() {
+    $('.rte p > img:not([alt])').attr('alt', 'Article Image');
+    $('.rte div > img:not([alt])').attr('alt', 'Article Image');
+  });
+
+  $.fn.isOnScreen = function(){
+
+    var win = $(window);
+
+    var viewport = {
+      top : win.scrollTop(),
+      left : win.scrollLeft()
+    };
+    viewport.right = viewport.left + win.width();
+    viewport.bottom = viewport.top + win.height();
+
+    var bounds = this.offset();
+    bounds.right = bounds.left + this.outerWidth();
+    bounds.bottom = bounds.top + this.outerHeight();
+
+    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+
+  };
+
+  $(function() {
+    var $el = $('.parallax-background');
+    $(window).on('scroll', function () {
+      $el.each(function(){
+        var $this = $(this);
+        if($this.isOnScreen()) {
+          var scroll = $this.offset().top - $(window).scrollTop();
+          $this.css({
+            'background-position':'50% '+(-.3*scroll)+'px'
+          });
+        }
+      });
+    });
+  });
+
+  $(document).ready(function(){
+    $('.slides').slick({
+      infinite: true,
+      speed: 300,
+      arrows: false,
+      slidesToShow: 1,
+      dots:true,
+      variableWidth: true
+    });
+  });
+  $('.article--gallery_column').each(function() {
+    $(this).magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {
+        enabled:true
+      },
+      image: {
+            titleSrc: 'title' 
+            // this tells the script which attribute has your caption
+        }
+    });
+  });
+</script>
+
+
+ {% if video_type == 'youtube' %}
+ <script>
+  // Load the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+  var player;
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+      height: '360',
+      width: '640',
+      videoId: '{{ video_id }}',
+      events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+    });
+  }
+  function onPlayerReady(){
+    //console.log('player is ready now');
+  }
+  function onPlayerStateChange(event) {
+    console.log(event.data);
+    if(event.data == 2 || event.data == 0) {
+      $('.holder').show();
+      $('.article-video').removeClass('show-video');
+    }
+  }
+  function playVideo() {
+    player.playVideo();
+  }
+ </script>
+ {% elsif video_type == 'vimeo' %}
+ <script src="https://player.vimeo.com/api/player.js"></script>
+ <script>
+  var iframe = document.querySelector('.article-video iframe');
+  var player = new Vimeo.Player(iframe);
+  player.on('play', function() {
+    console.log('Played the video');
+  });
+  function playVideo() {
+    player.play();
+  }
+  player.on('pause', function() {
+    $('.holder').show();
+    $('.article-video').removeClass('show-video')
+  });
+  player.on('ended', function() {
+    $('.holder').show();
+    $('.article-video').removeClass('show-video')
+  });
+</script>
+ {% endif %}
+ <script>
+  $(document).ready(function(){
+    $(".article-video-icon").click(function () {
+      $('.holder').hide();
+      $('.article-video').addClass('show-video')
+      playVideo();
+    });
+  })
+ </script>
+
+{% schema %}
+  {
+    "name": "Posts",
+	"class": "article-single--new",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

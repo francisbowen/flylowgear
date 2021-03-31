@@ -1,0 +1,95 @@
+{% include 'episode' %}
+
+  {% schema %}
+    {
+      "name": "Episodes",
+      "class": "index-section",
+      "settings": [
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+
+        {
+          "type": "header",
+          "content": "All Episodes Content"
+
+        }
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "name": "Episode Content",
+          "settings": [
+          {
+              "type": "checkbox",
+              "id": "coming_soon",
+              "label": "Coming Soon"
+          },
+          {
+              "type": "text",
+              "id": "title",
+              "label": "Title",
+              "default": "Season 1 / Episode 1"
+          },
+          {
+              "type": "page",
+              "id": "page",
+              "label": "Select Episode Page"
+          },
+          {
+              "type": "header",
+              "content": "Top Video Section"
+          },
+          {
+              "type": "image_picker",
+              "id": "video_image",
+              "label": "Video Background Image"
+          },
+          {
+              "type": "text",
+              "id": "video_id",
+              "label": "Vidoe ID"
+          },
+          {
+              "type": "header",
+              "content": "Right Side Image"
+          },
+          {
+              "type": "image_picker",
+              "id": "header-image",
+              "label": "Image on Right"
+          },
+
+          {
+              "type": "image_picker",
+              "id": "image-center2",
+              "label": "Center Full Width Image"
+          },
+          {
+              "type": "header",
+              "content": "Bottom Text With Left Image"
+          },
+          {
+              "type": "image_picker",
+              "id": "bottom-image-left",
+              "label": "Bottom Image Left"
+          },
+          {
+              "type": "richtext",
+              "id": "text",
+              "label": "Description"
+              
+          }
+         
+          ]
+        }
+      ]
+    }
+  {% endschema %}

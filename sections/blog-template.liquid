@@ -1,0 +1,332 @@
+{% paginate blog.articles by 9 %}
+<div class="{% if section.settings.layout == 'list' %}blog--list-view{% endif %}">
+  {% if section.settings.layout == 'grid' %}
+    <div class="container">
+    {% if section.settings.blog_filters %}
+      {%- assign fitlers = section.settings.blog_filters | split: ',' -%}
+      <ul class="blog-categories">
+        <li><a href="{{ blog.url }}" class="btn {% unless current_tags %}active{% endunless %}">All</a></li>
+      {% for filter in fitlers %}
+        {% if blog.all_tags contains filter %}
+          <li><a class="btn {% if current_tags contains filter %}active{% endif %}" href="{{ blog.url }}/tagged/{{ filter | handleize }}">{{ filter }}</a></li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+        <select class="tag-filter--select" id="blog-category-select" name="blog-category-select">
+          <option value="{{ blog.url }}" {% unless current_tags %}selected{% endunless %}>All</option>
+          {% for filter in fitlers %}
+            {% if blog.all_tags contains filter %}
+              <option value="{{ blog.url }}/tagged/{{ filter | handleize }}" {% if current_tags contains filter %}selected{% endif %}>{{ filter }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+    {% endif %}
+      <div id="AjaxinateLoop" class="row grid--blog">
+
+        {% if section.settings.enable_sidebar %}
+          <div class="col-md-40">
+            <div class="row">
+        {% endif %}
+
+              {% for article in blog.articles %}
+                {% include 'blog-grid' %}
+              {% endfor %}
+        {% if section.settings.enable_sidebar %}
+            </div>
+          </div>
+          <aside class="col-md-20">
+            {% include 'sidebar' %}
+            <div class="sidebar__item">
+              <h4>Filter Articles</h4>
+              {% if blog.tags.size > 0 %}
+                <select id="BlogTagFilter">
+                  <option value="/blogs/{{ blog.handle }}">{{ 'blogs.article.all_topics' | t }}</option>
+                  {% for tag in blog.all_tags %}
+                    <option value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+                  {% endfor %}
+                </select>
+              {% endif %}
+            </div>
+          </aside>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <div class="border-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-40">
+            {% for article in blog.articles %}
+              <div class="article--listing">
+                {% if article.image %}
+                  <a href="{{ article.url }}" class="article__list-image" style="background-image:url({{ article.image.src | img_url: 'master' }})"></a>
+                {% endif %}
+                <h2 class="article__title h3"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+                {% if article.tags.size > 0 %}
+                  <div class="article__tags article__tags--list rte">
+                    {{ 'blogs.article.posted_in' | t }}
+                    {% for tag in article.tags %}
+                      <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <!--{% if section.settings.blog_show_author %}
+                  <span class="article__author">{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+                {% endif %}-->
+
+                <!--{% if section.settings.blog_show_date %}
+                  <span class="article__date">
+                    {{ article.published_at | time_tag: format: 'month_day_year' }}
+                  </span>
+                {% endif %}-->
+                <div class="rte">
+                  {% if article.excerpt.size > 0 %}
+                    {{ article.excerpt }}
+                  {% else %}
+                    {{ article.content | strip_html | truncatewords: 80 }}
+                  {% endif %}
+                </div>
+
+                <ul class="list--inline article__meta-buttons">
+                  <li>
+                    <a href="{{ article.url }}" class=" btn--large">
+                      {{ 'blogs.article.read_more' | t }}
+                    </a>
+                  </li>
+
+                  {% if blog.comments_enabled? and article.comments_count == 0 %}
+                    <li>
+                      <a href="{{ article.url }}#comment_form" class="btn btn--secondary btn--small">
+                        {{ 'blogs.comments.title' | t }}
+                      </a>
+                    </li>
+                  {% endif %}
+                  {% unless forloop.last %}<div class="border-bar"><hr></div>{% endunless %}
+                  {% if blog.comments_enabled? and article.comments_count > 0 %}
+                    <li>
+                      <a href="{{ article.url }}#comments" class="btn btn--secondary btn--small">
+                        {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            {% endfor %}
+
+          </div>
+
+          {% if section.settings.enable_sidebar %}
+            <aside class="col-md-20">
+              <div class="sidebar__item">
+                <h4>Filter Articles</h4>
+                {% if blog.tags.size > 0 %}
+                  <select id="BlogTagFilter">
+                    <option value="/blogs/{{ blog.handle }}">{{ 'blogs.article.all_topics' | t }}</option>
+                    {% for tag in blog.all_tags %}
+                      <option value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              </div>
+
+              {% include 'sidebar' %}
+
+            </aside>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div id="AjaxinatePagination" class="pagination text-center">
+    {% if paginate.next %}
+      <a class="btn" href="{{ paginate.next.url }}">Load More</a>
+    {% endif %}
+  </div>
+</div>
+
+{% endpaginate %}
+
+<script>
+  $(document).ready(function() {
+    var endlessScroll = new Ajaxinate({
+      method: 'click'
+    });
+    $('.tag-filter--select').change(function(){
+      window.location = $(this).val();
+    })
+  });
+</script>
+<style>
+  .tag-filter--select {
+    display:none;
+    margin:0 auto 30px;
+    background-color:#000000;
+    color:#ffffff;
+    font-size:18px;
+    text-align:center;
+  }
+  .blog-categories {
+    list-style:none;
+    text-align:center;
+    margin:0 auto 30px auto;
+  }
+  .blog-categories li {
+    display:inline-block;
+    margin:0 5px;
+  }
+  .blog-categories li a {
+    display:block;
+    line-height:2rem;
+    padding:0 20px;
+    background-color:#000;
+    color:#fff;
+  }
+  .blog-categories li a.active {
+    background-color:#7796a8;
+  }
+  @media screen and (max-width:990px) {
+    .blog-categories li {
+      margin:0 2px;
+    }
+    .blog-categories li a {
+      padding:0 7px;
+    }
+  }
+  @media screen and (max-width:767px) {
+    .blog-categories {
+      display:none;
+    }
+    .tag-filter--select {
+      display:block;
+    }
+  }
+</style>
+{% schema %}
+  {
+    "name": "Blog pages",
+    "class": "article-featuredsection",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "list",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "list",
+            "label": "List"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_sidebar",
+        "label": "Enable sidebar?"
+      },
+      {
+        "type":"textarea",
+        "id":"blog_filters",
+        "label":"Blog Fitlers",
+        "info":"Comma separate each tag"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection_sidebar",
+        "name": "Featured Collection",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection to use"
+          },
+          {
+            "type": "select",
+            "id": "collection_qty",
+            "options": [
+              { "value": "2", "label": "2" },
+              { "value": "3", "label": "3" },
+              { "value": "4", "label": "4" },
+              { "value": "5", "label": "5" },
+              { "value": "6", "label": "6" }
+            ],
+            "label": "Number of products to show"
+          }
+        ]
+      },
+      {
+        "type": "menu_sidebar",
+        "name": "Quick Links",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "link_list",
+            "id": "quick_links",
+            "label": "Linklist to use"
+          }
+        ]
+      },
+      {
+        "type": "image_sidebar",
+        "name": "Advertisement",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Ad image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Ad link"
+          }
+        ]
+      },
+      {
+        "type": "blog_sidebar",
+        "name": "Most Recent Blog Post",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Latest Article"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

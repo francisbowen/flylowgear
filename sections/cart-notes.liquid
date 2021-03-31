@@ -1,0 +1,77 @@
+{% if shop.customer_accounts_enabled and section.settings.enable %}
+  {% assign is_pro = false %}
+  {% assign note = section.settings.prepend | append: ' ' %}
+  {% for block in section.blocks %}
+    {% for tag in customer.tags %}
+      {% if block.settings.tag == tag %}
+        {% assign is_pro = true %}
+		{% assign note = note | append: ' ' | append: block.settings.output  %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  {% if is_pro == false %}
+    {% assign note = section.settings.prepend | append: ' ' | append: section.settings.retail_output %}
+  {% endif %}
+<script>
+  //add cart note based on customer tags
+  $(document).ready(function() {
+
+    jQuery.post('/cart/update.js',
+                "note={{note | escape}}"
+    );
+  });
+</script>
+{% endif %}
+{% schema %}
+  {
+    "name": "Pro Customer Notes",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable",
+        "label": "Enable?",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "prepend",
+        "label": "Prepend to Note",
+        "info": "Label or text to display before Order Text",
+        "default":"Customer Type:"
+      },
+      {
+        "type": "text",
+        "id": "retail_output",
+        "label": "Retail Order Text",
+        "info": "Default text to add to order note if not pro tags are found",
+        "default":"RETAIL"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "row",
+        "name": "Row",
+        "settings": [
+          {
+            "type": "text",
+            "id": "tag",
+            "label": "Customer Tag",
+            "info":"Customer tag to search for"
+          },
+          {
+            "type": "text",
+            "id": "output",
+            "label": "Text Output",
+            "info":"If tag is found output this text to the order note"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

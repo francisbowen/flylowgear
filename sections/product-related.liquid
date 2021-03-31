@@ -1,0 +1,277 @@
+{% if section.settings.related_featured or section.settings.related_tag or section.settings.related_recent  %}
+  <div class="container custom-padding-section section-padding-{{ section.settings.section_padding }}">
+    <div class="row products-related">
+
+      {% if section.settings.related_featured %}
+        <div class="related-single__row col" data-tabtype="Suggested">
+          <div class="row">
+            {%- assign collection_related = collections[section.settings.related_collection] -%}
+            {% for product in collection_related.products limit:4 %}
+              <div class="col-md-15">
+                {% include 'product-card-grid', grid_image_width: '250x' %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if section.settings.related_tag %}
+        {%- assign number_of_products = 4 -%}
+        {%- assign number_of_products_to_fetch = number_of_products | plus: 1 -%}
+
+        {% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+          {%- assign found_a_collection = false -%}
+          {% for c in product.collections %}
+            {% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+              {%- assign found_a_collection = true -%}
+              {%- assign collection_related_second = c -%}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {%- assign collection_related_second = collection -%}
+        {% endif %}
+        {% if collection_related_second and collection_related_second.products_count > 1 %}
+          <div class="related-single__row col" data-tabtype="Related">
+            <div class="row">
+              <hr style="width: 100%;margin: 20px 0px;"/>
+              <h3 style="margin:20px 0;text-align:center;width:100%;">You May Also Like</h3>
+              {%- assign current_product = product -%}
+              {%- assign current_product_found = false -%}
+              {% for product in collection_related_second.products limit: number_of_products_to_fetch %}
+                {% if product.handle == current_product.handle %}
+                  {%- assign current_product_found = true -%}
+                {% else %}
+                  {% unless current_product_found == false and forloop.last %}
+                    <div class="col-md-15 responsive-item">
+                      {% include 'product-card-grid2', grid_image_width: '250x' %}
+                    </div>
+                  {% endunless %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+      {% if section.settings.related_recent %}
+        <div class="related-single__row col" data-tabtype="Recently Viewed">
+          <div id="recently-viewed-products" class="collection clearfix row" style="display:none"></div>
+        </div>
+      {% endif %}
+    </div>
+    {% if section.settings.related_recent %}
+      {{ '//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js' | script_tag }}
+      {{ 'jquery.products.min.js' | asset_url | script_tag }}
+      <script id="recently-viewed-product-template"  type="text/x-jquery-tmpl">
+        {% raw %}
+
+          <div class="col-md-15 ">
+            <div class="grid-view-item{{if !available}} product-price--sold-out grid-view-item--sold-out{{/if}}">
+              <a class="grid-view-item__link animsition-link" href="${url}">
+                <img class="grid-view-item__image" src="${Shopify.Products.resizeImage(images[1], '600x600')}" alt="${title}">
+                <div class="h4 grid-view-item__title">${title}</div>
+                {% endraw %}
+                {% if section.settings.show_vendor %}
+                  {% raw %}<div class="grid-view-item__vendor">${vendor}</div>{% endraw %}
+                {% endif %}
+                {% raw %}
+                <div class="grid-view-item__meta">
+                  {{if compare_at_price > price}}
+                    {{if price_varies}}
+                      <span class="visually-hidden">Regular price</span>
+                      <s class="product-price__price">${Shopify.formatMoney(compare_at_price)}</s>
+                      <span class="product-price__price product-price__sale">
+                        <span class="product-price__price">${Shopify.formatMoney(price)}</span>
+                        <span class="product-price__sale-label">Sale</span>
+                      </span>
+                    {{else}}
+                      <span class="visually-hidden">Regular price</span>
+                      <s class="product-price__price">${Shopify.formatMoney(compare_at_price)}</s>
+                      <span class="product-price__price product-price__sale">
+                        ${Shopify.formatMoney(price)}
+                        <span class="product-price__sale-label">Sale</span>
+                      </span>
+                    {{/if}}
+                  {{else}}
+
+                    {{if price_varies}}
+                      <span class="product-price__price">${Shopify.formatMoney(price)}</span>
+                    {{else}}
+                      <span class="visually-hidden">Regular price</span>
+                      <span class="product-price__price">${Shopify.formatMoney(price)}</span>
+                    {{/if}}
+                  {{/if}}
+
+                  {{if !available}}
+                    <span class="product-price__sold-out">Sold Out</span>
+                  {{/if}}
+                </div>
+              </a>
+            </div>
+          </div>
+        {% endraw %}
+      </script>
+      <script>
+        Shopify.Products.showRecentlyViewed( { howManyToShow: 4 } );
+        Shopify.Products.recordRecentlyViewed();
+      </script>
+    {% endif %}
+
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Related",
+    "settings": [
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "full",
+            "label": "Full-width"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "checkbox",
+        "id": "vertical",
+        "label": "Vertical thumbnails?",
+        "info": "Works best when 'Image size' is larger"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quantity_selector",
+        "label": "Show quantity selector",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_variant_labels",
+        "label": "Show variant labels",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_zoom",
+        "label": "Enable image zoom",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Size Charts"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sizechart",
+        "label": "Enable Size Chart",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "mens_size",
+        "label": "Mens Size Chart Url",
+        "default": "https://cdn.shopify.com/s/files/1/0022/7816/2492/files/Size_Chart_Mens_1.pdf?7781919523933269127"
+      },
+      {
+        "type": "text",
+        "id": "womens_size",
+        "label": "Womens Size Chart Url",
+        "default": "https://cdn.shopify.com/s/files/1/0022/7816/2492/files/HP_BrandBanner-1680x600_2000x2000_36d0912d-0615-4123-a624-2b4d4fb44315.png?7781919523933269127"
+      },
+      {
+        "type": "header",
+        "content": "Related Products - Featured"
+      },
+      {
+        "type": "checkbox",
+        "id": "related_featured",
+        "label": "Enable featured block?"
+      },
+      {
+        "type": "collection",
+        "id": "related_collection",
+        "label": "Featured collection"
+      },
+      {
+        "type": "header",
+        "content": "Related Products - Related"
+      },
+      {
+        "type": "checkbox",
+        "id": "related_tag",
+        "label": "Enable related block?"
+      },
+      {
+        "type": "header",
+        "content": "Related Products - Recent"
+      },
+      {
+        "type": "checkbox",
+        "id": "related_recent",
+        "label": "Enable recently viewed block?"
+      },
+      {
+        "type": "select",
+        "id": "section_padding",
+        "label": "Section padding",
+        "default": "medium",
+        "options": [
+          {
+            "label": "None",
+            "value": "none"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "x-large"
+          }
+        ]
+      }
+
+
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

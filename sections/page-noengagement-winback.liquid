@@ -1,0 +1,222 @@
+{% comment %}
+<div class="flylow-hero__video" style="background-image: url('{{ section.settings.banner_image | img_url: '1500x' }}');">
+  <div class="video-wrapper-hp">
+    <a class="js-video-pop" href="https://vimeo.com/{{section.settings.video_id}}">
+      <img src="{{ section.settings.vidoe_image | img_url: '1500x' }}">
+      <div class="copy-wrap">
+        <h2 class="title">{{section.settings.video_title}}</h2>
+        <span class="vid-play-btn -big"></span>
+      </div>
+    </a>
+  </div>
+</div>
+{% endcomment %}
+<div class="container">
+    <div class="shop-descrption">
+      {{page.content}}
+    </div>
+
+</div>
+<div class="lookbook-wrap">
+{% for block in section.blocks %} 
+{% if collection.handle == block.settings.sepcial_collection %} {% capture thecycle %}{% cycle 'odd', 'even' %}{% endcapture %} {% if thecycle == 'odd' %}
+<div class="collection-kit__shop" style="background-image: url('{{ block.settings.background_image | img_url: '1500x' }}');">
+  <div class="container">
+    <div class="row">
+      <div class="collection-kit__hero__description {% if block.settings.text_layout == 'center' %}column-center{% elsif block.settings.text_layout == 'right' %} column-right {% endif %} text-{{ block.settings.text_align }}">
+        <h3>{{block.settings.title}}</h3>
+        <p>{{block.settings.text_caption}}</p>
+        <a href="{{block.settings.button_url}}" class="btn -featured btn-lookbook">{{block.settings.button_text}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="special">
+    <h2>{{block.settings.collection_title}}</h2>
+    <div class="row">
+      {% for product in collections[block.settings.slider_collection].products limit: 4 %}
+      <div class="col-md-15 col-sm-30 mobile-item">{% include 'product-card-grid'%}</div> {% endfor %}
+    </div>
+    <p class="tac" style="width: 100%; display: inline-block;">
+    <a href="{{block.settings.shop_url}}" class="btn -featured">{{block.settings.collection_button}}</a></p>
+  </div>
+</div>
+{% else %}
+<div class="collection-kit__shop" style="background-image: url('{{ block.settings.background_image | img_url: '1500x' }}');">
+  <div class="container">
+    <div class="row">
+      <div class="collection-kit__hero__description2 {% if block.settings.text_layout == 'center' %} column-center {% elsif block.settings.text_layout == 'right' %} column-right {% endif %} text-{{ block.settings.text_align }}">
+        <h3>{{block.settings.title}}</h3>
+        <p>{{block.settings.text_caption}}</p>
+        <a href="{{block.settings.button_url}}" class="btn -featured">{{block.settings.button_text}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="special">
+    <h2>{{block.settings.collection_title}}</h2>
+    <div class="row">
+      {% for product in collections[block.settings.slider_collection].products limit: 4 %}
+      <div class="col-md-15 col-sm-30 mobile-item">{% include 'product-card-grid'%}</div> {% endfor %}
+    </div>
+    <p class="tac" style="width: 100%; display: inline-block;">
+    <a href="{{block.settings.shop_url}}" class="btn -featured">{{block.settings.collection_button}}</a></p>
+  </div>
+</div>
+</div>
+{% endif %} {% endif %} {% endfor %}
+<script type="text/javascript">
+	$(document).ready(function() {
+	$('.popup-youtube, .js-video-pop, .popup-gmaps').magnificPopup({
+		disableOn: 700,
+		type: 'iframe',
+		mainClass: 'mfp-fade',
+		removalDelay: 160,
+		preloader: false,
+
+		fixedContentPos: false
+	});
+});
+</script>
+{% schema %}
+  {
+    "name": "Lookbook",
+    "settings": [
+
+    	{
+            "type": "image_picker",
+            "id": "banner_image",
+            "label": "Header Background Image"
+            
+          },
+          {
+            "type": "image_picker",
+            "id": "vidoe_image",
+            "label": "Video Background Image"
+            
+          },
+          {
+            "type": "text",
+            "id": "video_title",
+            "label": "Video Title"
+          },
+          {
+            "type": "text",
+            "id": "video_id",
+            "label": "Video ID"
+          }
+      
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Featured Content",
+        "settings": [
+        {
+             "type": "header",
+             "content": "Hero Image Info"
+          },
+          
+         {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Background Image of Text Block"
+            
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Text"
+          },
+           {
+            "type": "richtext",
+            "id": "text_caption",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text"
+            
+          },
+           {
+            "type": "url",
+            "id": "button_url",
+            "label": "Button Link"
+            
+          },
+         {
+            "type": "select",
+            "id": "text_layout",
+            "label": "Text Position",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Text on Left"
+              },
+              {
+                "value": "center",
+                "label": "Text on Center"
+              },
+              {
+                "value": "right",
+                "label": "Text on right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text Aligment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left Aligned Text"
+              },
+              {
+                "value": "center",
+                "label": "Center Aligned Text"
+              },
+              {
+                "value": "right",
+                "label": "Right Aligned Text"
+              }
+            ]
+          },
+          {
+             "type": "header",
+             "content": "Featured Collection Info"
+          },
+           {
+            "type": "text",
+            "id": "collection_title",
+            "label": "Collection Title"
+          },
+          {
+            "type": "collection",
+            "id": "slider_collection",
+            "label": "Collection Slider"
+            
+          },
+          {
+            "type": "text",
+            "id": "collection_button",
+            "label": "Shop All Button Text"
+            
+          },
+          {
+            "type": "url",
+            "id": "shop_url",
+            "label": "Shop All Button Link"
+            
+          }
+
+        ]
+      }
+    ]
+  }
+{% endschema %}

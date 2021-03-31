@@ -1,0 +1,210 @@
+<div class="page-aboutUs">
+  <section class="aboutUs-content">
+    <div class="container">
+      <div class="about-navigatiion">
+        <ul class="h2">
+          {% for block in section.blocks %}
+          <li><a href="#{{block.settings.title | handle }}">{{ block.settings.title }}</a></li>
+          {% endfor %}
+          <li><a href="#about-lab">The Good Lab</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <div class="{% if section.settings.full_width %}container-fluid to-edges{% else %}container{% endif %} custom-padding-section section-padding-{{ section.settings.section_padding }}">
+    {% for block in section.blocks %}
+      {% capture evens %}{{ forloop.index | modulo:2 }}{% endcapture %}
+      <div id="{{block.settings.title | handle }}" class="row  align-items-center{% if evens == '0' %} about-column-reverse{% else %} about-column{% endif %}" style="background-color:{{block.settings.benefit_color}};">
+        
+        <div class="col-lg-35 about-column-left about-column-{{block.id}}  {% if evens == '0' %} push-lg-25 {% endif %} ">
+          <div class="{% if block.settings.text_layout == 'center' %} text-center {% elsif block.settings.text_layout == 'right' %} text-right{% endif %} text-{{ block.settings.text_align }}">
+            <h2>{{block.settings.title}}</h2>
+            <div class="about-column-text">
+            {{block.settings.benefit_copy}}
+          </div>
+            {%if block.settings.link !=blank %}
+            <a href="{{ block.settings.link }}" class="btn">{{block.settings.button_text}}</a>
+            {%endif%}
+            {%if block.settings.link2 !=blank %}
+            <a href="{{ block.settings.link2 }}" class="btn">{{block.settings.button_text2}}</a>
+            {%endif%}
+          </div>
+        </div>
+        <div class="col-lg-25 px-0{% if evens == '0' %} pull-lg-35{% endif %}">
+         <div class="image-altblock" style="background-image:url('{{ block.settings.benefit_bg | img_url: '1024x1024' }}'); height:{{ section.settings.row_size }};"></div>
+        </div>
+      </div>
+      
+    {% endfor %} 
+  </div>
+</div>
+    <script>
+        $(document).ready(function(){
+            $(".about-navigatiion ul li a[href^='#']").click(function(e) {
+          e.preventDefault();
+          
+          var position = $($(this).attr("href")).offset().top;
+        
+          $("body, html").animate({
+            scrollTop: position
+          }, 1000 );
+        });
+        });
+        </script>
+  {% schema %}
+    {
+      "name": "Alternating Image Blocks",
+      "class": "index-section-item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Brand Benefit Rows"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Make this full width?",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "row_size",
+          "label": "Row size",
+          "default": "500px",
+          "options": [
+            {
+              "value": "250px",
+              "label": "Small"
+            },
+            {
+              "value": "500px",
+              "label": "Medium"
+            },
+            {
+              "value": "750px",
+              "label": "Large"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "section_padding",
+          "label": "Section padding",
+          "default": "medium",
+          "options": [
+            {
+              "label": "None",
+              "value": "none"
+            },
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            },
+            {
+              "label": "Extra Large",
+              "value": "x-large"
+            }
+          ]
+        }
+      ],
+      "blocks": [
+        {
+          "type": "row",
+          "name": "Row",
+          "settings": [
+            {
+              "type": "header",
+              "content": "Benefits Row"
+            },
+            {
+              "type": "color",
+              "id": "benefit_color",
+              "label": "Background color for row",
+              "default": "#f7f7f7"
+            },
+            {
+              "type": "image_picker",
+              "id": "benefit_bg",
+              "label": "Background image for image size",
+              "info": "Best at minimum 800x800px"
+            },
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Title"
+            },
+            {
+              "type": "color",
+              "id": "title_color",
+              "label": "Title color",
+              "default": "#f7f7f7"
+            },
+            {
+              "type": "html",
+              "id": "benefit_copy",
+              "label": "Text"
+            },
+            {
+              "type": "color",
+              "id": "copy_color",
+              "label": "Text color",
+              "default": "#f7f7f7"
+            },
+            {
+              "type": "text",
+              "id": "button_text",
+              "label": "Button text",
+              "default": "Shop Now"
+            },
+            {
+              "type": "url",
+              "id": "link",
+              "label": "Button link"
+            },
+            {
+              "type": "text",
+              "id": "button_text2",
+              "label": "Button two text",
+              "default": "Shop Now"
+            },
+            {
+              "type": "url",
+              "id": "link2",
+              "label": "Button link two"
+            },
+          {
+            "type": "select",
+            "id": "text_layout",
+            "label": "Horizontal Text Position",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Text on Left"
+              },
+              {
+                "value": "center",
+                "label": "Text on Center"
+              },
+              {
+                "value": "right",
+                "label": "Text on right"
+              }
+            ]
+          }
+          ]
+        }
+      ]
+    }
+  {% endschema %}
+</div>

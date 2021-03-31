@@ -1,0 +1,196 @@
+<div class="container-fluid custom-padding-section section-padding-{{ section.settings.section_padding }}">
+  <div class="row"> {% for block in section.blocks %}
+    <div class="col-md-20" style="padding:0 !important">
+      <div class="link-card -haslink -middle">
+        <div class="bg-img" style="background-image: url('{{ block.settings.image | img_url: '500x500' }}')"> </div>
+        <div class="caption">
+          <h4 class="heading">{{ block.settings.title}}</h4>
+          <p class="subtitle"></p>
+          <a href="{{ block.settings.link1}}" class="btn -imagebtn"> Men's </a> <a href="{{ block.settings.link2}}" class="btn -imagebtn"> Women's </a> </div>
+      </div>
+    </div>
+    {% endfor %} </div>
+</div>
+{% schema %}
+  {
+    "name": "footer top 3 block",
+	"max_blocks": 3,
+    "class": "bottom",
+    "settings": [
+      {
+        "type": "select",
+        "id": "section_padding",
+        "label": "Section padding",
+        "default": "medium",
+        "options": [
+          {
+            "label": "None",
+            "value": "none"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "x-large"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Add block",
+        "settings": [
+        {"type": "image_picker",
+            "id": "image",
+            "label": "Image"
+       },
+       {"type": "text",
+            "id": "title",
+            "label": "Title"
+       },
+       {"type": "text",
+            "id": "link1",
+            "label": "Button 1 Link"
+       },
+       { "type": "text",
+            "id": "link2",
+            "label": "Button 2 Link"
+       }
+        ]  
+        }  
+    ]
+  }
+{% endschema %}
+
+
+{% stylesheet %}
+      
+ .col-sm-20.nopad {
+    padding: 0 !important;
+}{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.link-card {
+ padding:0;
+ position:relative
+}
+.link-card .bg-img {
+ width:100%;
+ padding-bottom:100%;
+ display:block;
+ background-size:cover;
+ background-position:center;
+ margin-bottom:0;
+ position:relative;
+ overflow:hidden
+}
+
+.link-card .caption {
+ position:absolute;
+ text-align:center;
+ opacity:0;
+ width:90%;
+ top:50%;
+ left:50%;
+ z-index:20;
+ position:absolute;
+ transform:translate(-50%,-50%);
+ transition:all .2s ease-in
+}
+.link-card .caption:hover {
+ position:absolute;
+ text-align:center;
+ opacity:1;
+ width:90%;
+ top:50%;
+ left:50%;
+ z-index:20;
+ position:absolute;
+ transform:translate(-50%,-50%);
+ transition:all .2s ease-in
+}
+
+.link-card .caption .heading {
+ font-size:1.5rem;
+ color:#fff;
+ margin-bottom:0
+}
+.link-card .caption {
+    opacity: 0;
+    padding-top: 10%;
+}
+.link-card:hover .caption {
+    padding-top: 0;
+    opacity: 1;
+}
+.link-card .caption .subtitle {
+    color: #333;
+    font-size: .8rem;
+    margin: 0;
+    color: #fff;
+}
+.link-card .caption .-imagebtn {
+    margin-top: 30px;
+}
+.btn-block {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    width: auto;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 8px 15px;
+    background-color: #d92027;
+    color: #fff;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: normal;
+    font-size: 12px;
+}
+.link-card.-haslink .bg-img::after {
+	opacity: 0;
+	background-color: rgba(0,0,0,.4);
+	top: 25%;
+	left: 25%;
+}
+.link-card.-haslink .bg-img::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(0,0,0,.3);
+    position: absolute;
+    transition: all .2s ease-in;
+}
+.link-card:hover .bg-img::after {
+    opacity: 1;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    position: absolute;
+}
+
+{% endstylesheet %}
+

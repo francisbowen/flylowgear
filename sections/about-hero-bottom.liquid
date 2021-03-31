@@ -1,0 +1,67 @@
+<div class="page-aboutUs">
+  <div id="about-lab" class="about-lab"{% if section.settings.image !=blank %}style="background-image:url({{section.settings.image | img_url: '1500x'}}){% endif %}">
+      <div class="container">
+        <div class="lab-content text-center">
+          <div class="text-content">
+          <h2>{{section.settings.title}}</h2>
+          <p>{{section.settings.text}} </p>
+          </div>
+        </div>
+        <div class="lab-logos">
+          <div class="row justify-content-center">
+             {% for block in section.blocks %}
+            <div class="col-md-20">
+              {% if block.settings.image !=blank %}
+              <a href="{{block.settings.link}}"><div class="lab-logo" style="background-image:url({{block.settings.image | img_url: '400x200'}})">
+              </div></a>
+            {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  {% schema %}
+    {
+      "name": "About bottom hero",
+      "class": "index-section",
+      "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "THE GOOD LAB"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "logo",
+          "name": "Logo",
+          "settings": [
+            {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Logo link"
+          }
+          ]
+        }
+      ]
+    }
+  {% endschema %}
+

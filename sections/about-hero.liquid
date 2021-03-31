@@ -1,0 +1,31 @@
+<div class="page-aboutUs">
+  <div class="header-bg-top">
+    <div class="header-image image-bar__overlay1" {% if section.settings.hero_image %}style="background-image: url({{section.settings.hero_image | img_url: '1500x'}}); {% endif %}">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-40 offset-md-10 banner-bg text-center">
+              <h1 class="entery-title" style="color:#ffffff;">{{section.settings.hero_title}}</h1>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  {% schema %}
+    {
+      "name": "About hero",
+      "class": "index-section-item",
+      "settings": [
+       {
+         "type": "image_picker",
+         "id": "hero_image",
+         "label": "Hero image"
+      },
+      {
+         "type": "text",
+         "id": "hero_title",
+         "label": "Hero title"
+      }
+      ]
+    }
+  {% endschema %}
+</div>

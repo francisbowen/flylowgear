@@ -1,0 +1,161 @@
+<div class="container-fluid to-edges custom-padding-section section-padding-{{ section.settings.section_padding }}">
+  {% capture image_layout %}
+    <div class="col-sm-30 feature-row__image equalize" style="background-image:url('{{ section.settings.image | img_url: "1000x1000" }}');background-size:cover;min-height:400px;background-position:{{section.settings.alignment}};">
+
+    </div>
+  {% endcapture %}
+
+  <div class="row no-gutters align-items-center">
+    {% if section.settings.layout == 'left' %}
+      {{ image_layout }}
+    {% endif %}
+
+    <div class="equalize col-sm-26 offset-sm-2 feature-row__text--{{ section.settings.layout }}">
+      {% if section.settings.title != blank %}
+        <h2 class="h3">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <div class="rte-setting featured-row__subtext">{{ section.settings.text }}</div>
+      {% endif %}
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="btn">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+
+    {% if section.settings.layout == 'right' %}
+      {{ image_layout }}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Image with text",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Image alignment",
+            "default": "top",
+            "options": [
+              {
+                "value": "center",
+                "label": "Middle"
+              },
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              },
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "top right",
+                "label": "Top Right"
+              },
+              {
+                "value": "bottom right",
+                "label": "Bottom Right"
+              },
+              {
+                "value": "bottom left",
+                "label": "Bottom Left"
+              },
+              {
+                "value": "top left",
+                "label": "Top Left"
+              }
+            ]
+          },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Image on left"
+          },
+          {
+            "value": "right",
+            "label": "Image on right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "section_padding",
+        "label": "Section padding",
+        "default": "medium",
+        "options": [
+          {
+            "label": "None",
+            "value": "none"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "x-large"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with text",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

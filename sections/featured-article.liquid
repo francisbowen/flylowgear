@@ -1,0 +1,67 @@
+{% if section.settings.article_featured != blank %}
+  {%- assign article_handle = section.settings.article_featured -%}
+  {%- assign article = articles[article_handle] -%}
+{% else %}
+  {% for story in blog.articles %}
+    {% if story.tags contains 'featured' %}
+      {% assign article = story %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% unless article %}
+  {%- assign article = block.articles[0] -%}
+{% endunless %}
+
+<div class="container">
+  <div class="row grid--blog featuredblog">
+    <div class="col-md-30 col-60">
+      <div class="article__grid-meta">
+        <p class="subtitle">{{ section.settings.title }}</p>
+        <h2 class="article__title h3">
+          <a href="{{ article.url }}">{{ article.title }}</a>
+        </h2>
+
+        <div class="rte article__grid-excerpt">
+          {% if article.excerpt.size > 0 %}
+            {{ article.excerpt | strip_html | truncatewords: 25 }}
+          {% else %}
+            {{ article.content | strip_html | truncatewords: 25 }}
+          {% endif %}
+        </div>
+
+        <ul class="list--inline">
+          <li>
+            <a href="{{ article.url }}" class="article_btn">
+              {{ 'blogs.article.read_more' | t }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <a href="{{ article.url }}" class="col-md-30 col-60 article__list-image" style="background-image:url({{ article.image.src | img_url: '1000x' }});"></a>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Featured Article",
+    "class": "blog-featuredsection",
+    "settings": [
+	  {
+		"type": "text",
+        "id": "title",
+        "label": "Featured Title",
+        "default": "Featured"
+      },
+	  {
+		"type": "article",
+        "id": "article_featured",
+        "label": "Featured Article",
+        "info": "Will default to first newest article tagged *featured*"
+      }
+	]
+  }
+{% endschema %}

@@ -1,0 +1,65 @@
+<div class="container-fluid">
+  <div class="row"> {% for block in section.blocks %}
+    <div class="col-md-20" style="padding:0 !important">
+      <div class="link-card -haslink -middle">
+        <div class="bg-img" style="background-image: url('{{ block.settings.image | img_url: '500x500' }}')"> </div>
+        <div class="caption">
+          <h4 class="heading">{{ block.settings.title}}</h4>
+          <p class="subtitle"></p>
+          <a href="{{ block.settings.link1}}" class="btn -imagebtn"> {{ block.settings.button1}}  </a> <a href="{{ block.settings.link2}}" class="btn -imagebtn">{{ block.settings.button2}}  </a> </div>
+      </div>
+    </div>
+    {% endfor %} 
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Home Bottom Collections",
+	"max_blocks": 3,
+    "class": "bottom",
+    "settings": [
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Add Collection",
+        "settings": [
+        {"type": "image_picker",
+            "id": "image",
+            "label": "Image"
+       },
+       {"type": "text",
+            "id": "title",
+            "label": "Title"
+       },
+
+       { "type": "text",
+            "id": "button1",
+            "label": "Button 1 Text",
+			"default": "Men's"
+       },
+       {"type": "url",
+            "id": "link1",
+            "label": "Collection 1 Url"
+       },
+       { "type": "text",
+            "id": "button2",
+            "label": "Button 2 Text",
+			"default": "Women's"	
+       },
+       
+       { "type": "url",
+            "id": "link2",
+            "label": "Collection 2 Url"
+       }
+        ]  
+        }  
+    ],
+    "presets": [
+      {
+        "name": "Home Bottom Collections",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

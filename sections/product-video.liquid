@@ -1,0 +1,131 @@
+{%- assign need_tag = '' -%}
+{% for tag in product.tags %}
+  {% if tag contains 'video-' %}
+    {%- assign need_tag = tag -%}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% if need_tag != blank %}
+  {% for block in section.blocks %}
+    {% if need_tag == block.settings.text %}
+      <div class="container">
+        <div class="row">
+          <div class="col-60">
+                  {% if block.settings.video_url.type == 'vimeo' %}
+            <div class='embed-container'>
+      <iframe src="//player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay=0&loop=0&background=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+      </div>
+              {% else %}
+            <div id="video-overlay" style="background-image:url({{ block.settings.image | img_url: '1800x' }});"></div>
+            <div class="background-video">
+              <div id="player"></div>
+            </div>
+            {%endif%}
+          </div>
+        </div>
+      </div>
+      {% if block.settings.video_url.type == 'youtube' %}
+        <script type="text/javascript">
+          $('#video-overlay').on('click',function(){
+            $(this).fadeOut(500);
+            player.playVideo();
+          });
+
+          function onPlayerReady(event) {
+          	event.target.pauseVideo();
+          }
+
+          function createVideo() {
+            var youtubeScriptId = "youtube-api";
+            var youtubeScript = document.getElementById(youtubeScriptId);
+            var videoId = '{{ block.settings.video_url.id }}';
+
+            if (youtubeScript === null) {
+              var tag = document.createElement("script");
+              var firstScript = document.getElementsByTagName("script")[0];
+
+              tag.src = "https://www.youtube.com/iframe_api";
+              tag.id = youtubeScriptId;
+              firstScript.parentNode.insertBefore(tag, firstScript);
+            }
+
+            window.onYouTubeIframeAPIReady = function() {
+              window.player = new window.YT.Player('player', {
+                videoId: videoId,
+                playerVars: {
+                  autoplay: 1,
+                  showinfo: 0,
+                  modestbranding: 1,
+                  rel: 0,
+                  vq: 'hd1080'
+                },
+            		events: {
+            			'onReady': onPlayerReady
+            		}
+              });
+            };
+          }
+          $(window).load(function(){
+            createVideo();
+          });
+        </script>
+      {% endif %}
+
+
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+<style>
+  .embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+}
+		
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+{% schema %}
+  {
+    "name": "Product videos",
+    "class": "page-wrap",
+    "settings": [
+    ],
+    "blocks": [
+      {
+        "type": "video",
+        "name": "Video",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Tag to attach to",
+            "info": "Must start with 'video-''"
+          },
+          {
+            "type": "image_picker",
+            "id":"image",
+            "label": "Product image (video poster)",
+            "info":"1440 x 775 pixels"
+          },
+          {
+             "type": "video_url",
+             "id": "video_url",
+             "label": "Video URL",
+             "accept": ["youtube", "vimeo"]
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

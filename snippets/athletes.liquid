@@ -1,0 +1,45 @@
+
+
+{% if blog.handle == 'athletes' and template contains 'article' %}
+<div class="container"> 
+  <h2 class="athletes-title-blog">{{blog.title}}</h2>
+    <div class="row">
+    <div class="clearfix"></div>
+      {% for article in blogs.athletes.articles reversed %}
+      <div class="col-md-15 col-sm-30 team">
+        <div class="post-img-wrap">
+         {% if article.content contains "<img" %}
+          {% assign content = article.content | split: 'src="' %}
+          {% assign first_img = content[1] | split: '"' | first %}
+          {% assign image_src = first_img | replace: '_small', '' | replace: '_compact', '' | replace: '_medium', '' | replace: '_large', '' | replace: '_grande', '' %}
+          {% assign src = content[1] | replace: '_small', '' | replace: '_compact', '' | replace: '_medium', '' | replace: '_large', '' | replace: '_grande', '' %}
+          <a href="{{ article.url }}"><img src="{{image_src }}" /><br></a>
+          {% endif %}
+        <h4 class="athletes-title"><a href="{{article.url}}">{{article.title}}</a></h4>
+         </div>
+        </div>
+      {% endfor %}
+  </div>
+</div>
+{% else %}
+<div class="container"> 
+  <h2 class="athletes-title-blog">{{blog.title}}</h2>
+    <div class="row">
+    <div class="clearfix"></div>
+      {% for article in blogs.athletes.articles %}
+      <div class="col-md-15 col-sm-30 team">
+        <div class="post-img-wrap">
+         {% if article.content contains "<img" %}
+          {% assign content = article.content | split: 'src="' %}
+          {% assign first_img = content[1] | split: '"' | first %}
+          {% assign image_src = first_img | replace: '_small', '' | replace: '_compact', '' | replace: '_medium', '' | replace: '_large', '' | replace: '_grande', '' %}
+          {% assign src = content[1] | replace: '_small', '' | replace: '_compact', '' | replace: '_medium', '' | replace: '_large', '' | replace: '_grande', '' %}
+          <a href="{{ article.url }}"><img src="{{image_src }}" /><br></a>
+          {% endif %}
+        <h4 class="athletes-title"><a href="{{article.url}}">{{article.title}}</a></h4>
+         </div>
+        </div>
+      {% endfor %}
+  </div>
+</div>
+{% endif%}

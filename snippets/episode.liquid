@@ -1,0 +1,72 @@
+{% for block in section.blocks %} {% if page.handle == block.settings.page %}
+  <div id="video-channel" class="pagehero westward-hero" style="background-image: url('{{block.settings.video_image | img_url: '1500x' }}')">
+    <div class="video-wrapper">
+      <iframe id="vimeo" src="" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen"></iframe>
+    </div>
+    <div class="holder">
+      <a class="westward-video" data-framesrc="{{block.settings.video_id}}">
+        <img class="play-icon" src="{{'play-icon.png' | asset_url}}" alt="Play Westward Trailer">
+      </a>
+    </div>
+  </div>
+  {% break %} {% endif%} {% endfor %}
+  <div class="westward-pagination">
+    <div class="container-fluid">
+    <div class="flex-img-block">
+      <div class="row">
+        <div class="col-md-60">
+        <div class="episode-title-left">
+          <h4 class="episode-title">{{page.title}}</h4>
+        </div>
+          <div class="episode-select">
+            <h5><a href="{{section.settings.button_link}}">{{section.settings.button_label}}</a></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="flex-img-block">
+    <div class="row">
+      {% for block in section.blocks %} {% if page.handle == block.settings.page %}
+      <div class="text-wrapper col-md-35 ">
+        <p>{{page.content}}</p>
+      </div>
+      <div class="img-wrapper no-gutter col-md-25">
+        <img class="img" src="{{block.settings.header-image | img_url: '1500x' }}"> {% break %} {% endif%} {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="block-image">
+    <div class="container-fluid">
+      <div class="row">
+        {% for block in section.blocks %} {% if page.handle == block.settings.page %} {% if block.settings.image-center2 !=blank %}
+        <div class="col-md-60 nopadding episode-image" style=" background-image: url('{{ block.settings.image-center2  | img_url: '1500x' }}');">
+        </div>
+        {% endif %} {% break %} {% endif%} {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="image-section">
+    <div class="container-fluid">
+    <div class="flex-img-block">
+      <div class="row">
+        {% for block in section.blocks %} {% if page.handle == block.settings.page %} {% if block.settings.bottom-image-left !=blank %}
+        <div class="col-md-25 image-col"><img src="{{block.settings.bottom-image-left | img_url: '1500x' }}"></div>
+        {% endif %} {% if block.settings.text !=blank %}
+        <div class="col-md-35 text-col">{{block.settings.text}} </div>
+        {% endif %} {% break %} {% endif%} {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+  <script>
+   $(".westward-video").click(function () {
+    $(".holder").hide();
+    var t = $(this).attr("data-frameSrc"),
+     o = "https://player.vimeo.com/video/" + t + "?title=0&byline=0&portrait=0&autoplay=true";
+    $("#vimeo").attr("src", o), document.getElementById("video-channel").style.backgroundImage = "none", document.getElementById("video-channel").style.backgroundColor = "#000"
+   });
+  </script>

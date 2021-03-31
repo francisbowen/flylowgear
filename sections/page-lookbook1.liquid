@@ -1,0 +1,494 @@
+<style>
+  .text_layout-center {
+  	justify-content:center;
+  }
+  .text_layout-right {
+  	justify-content:flex-end;
+  }
+</style>
+<div class="lookbook-section" id="bigmountain">
+   <div class="lookbook-section-image {% if section.settings.background_overlay %}hero__overlay{% endif %}" style="background-image:url({{ section.settings.background_image | img_url: '2000x' }});">
+   </div>
+   <div class="container">
+      <div class="lookbook-primary-text">
+         <div class="row
+                     {% if section.settings.text_layout != blnak %}
+                     text_layout-{{ section.settings.text_layout }}
+                     {% endif %}
+                     {% if section.settings.text_align != blnak %}
+                     text-{{ section.settings.text_align }}
+                     {% endif %}
+                     ">
+            <div class="col-lg-40 col-md-60 col-xl-30">
+               {% if section.settings.title !=blank %}
+               <h2 {% if section.settings.hero_title_color != blank %}style="color:{{ section.settings.hero_title_color }}{% endif %}">{{ section.settings.title }}</h2>
+               {% endif %}
+              <div {% if section.settings.text_color != blank %}style="color:{{ section.settings.text_color }}{% endif %}                          
+                          "> 
+              {% if section.settings.text != blank %}
+               <p>{{ section.settings.text }}</p>
+               {% endif %}
+              </div>
+               <div class="lookbook__primary_buttons">
+                  {% if section.settings.cta_text1 != blank and section.settings.cta_link1 != blank %}
+                  <a href="{{ section.settings.cta_link1 }}" class="btn">{{ section.settings.cta_text1 }}</a>
+                  {% endif %}
+                  {% if section.settings.cta_text2 != blank and section.settings.cta_link2 != blank %}
+                  <a href="{{ section.settings.cta_link2 }}" class="btn">{{ section.settings.cta_text2 }}</a>
+                  {% endif %}
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="look-primary-images">
+         <div class="row">
+            {% for block in section.blocks %}
+            {% if forloop.index <= 6 %}
+            {% case forloop.index %}
+            {% when 1 %}
+            {%- assign gridcols = "col-sm-25" -%}
+            {% when 2 %}
+            {%- assign gridcols = "col-sm-15" -%}
+            {% when 3 %}
+            {%- assign gridcols = "col-sm-20" -%}
+            {% when 4 %}
+            {%- assign gridcols = "col-sm-35" -%}
+            {% when 5 %}
+            {%- assign gridcols = "col-sm-25" -%}
+            {% when 6 %}
+            {%- assign gridcols = "col-md-35 lookbook-text-column" -%}
+            {% endcase %}
+            <div class="{{ gridcols }}">
+               {% case block.type %}
+               {% when "image" %}
+               {% if block.settings.image != blank %}
+               <div class="primary-images {% if forloop.index > 1 and forloop.index <= 5 %}primary-image{{ forloop.index }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})"></div>
+               {% endif %}
+               {% when "video" %}
+               <div class="primary-images" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                  {% if block.settings.video != blank and block.settings.video_button == true %}
+                  <a href="{{ block.settings.video }}" class="video-popup">{% include 'icon-play' %}</a>
+                  {% endif %}
+                  {% if block.settings.video_text != blank %}
+                     <div class="video-text">{{ block.settings.video_text }}</div>
+                  {% endif %}
+               </div>
+               {% when "product" %}
+               <div class="primary-images {% if forloop.index > 1 and forloop.index <= 5 %}primary-image{{ forloop.index }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                  <div class="lookbook_product__detail text-center">
+                     <div class="prodcuct-detail-centered">
+                        {% if block.settings.title != blank %}
+                        <p class="product__title"> {{ block.settings.title }} </p>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                        <p class="product__description"> {{ block.settings.text }} </p>
+                        {% endif %}
+                        {% if block.settings.price != blank %}
+                        <p class="product__price"> {{ block.settings.price }} </p>
+                        {% endif %}
+                        {% if block.settings.color != blank %}
+                        <p class="product__color"> {{ block.settings.color }} </p>
+                        {% endif %}
+                        {% if block.settings.product_link != blank %}
+                        <a href="{{ block.settings.product_link }}" class="btn">Shop Now</a>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+               {% when "text" %}
+               {% if block.settings.text != blank %}
+               <p> {{ block.settings.text }} </p>
+               {% endif %}
+               <div class="featured_content_buttons">
+                  {% if block.settings.cta_link1 != blank %}
+                  <a href="{{ block.settings.cta_link1 }}" class="btn"> {{ block.settings.cta_text1 }} </a>
+                  {% endif %}
+                  {% if block.settings.cta_link2 != blank %}
+                  <a href="{{ block.settings.cta_link2 }}" class="btn"> {{ block.settings.cta_text2 }} </a>
+                  {% endif %}
+               </div>
+               {% endcase %}
+            </div>
+            {% endif %}
+            {% endfor %}
+         </div>
+      </div>
+      <div class="look-secondary-images">
+         <div class="row">
+            {% for block in section.blocks %}
+            {% if forloop.index > 6 %}
+            {%- assign loopNumber = forloop.index | minus: 7 -%}
+            {% case forloop.index %}
+            {% when 7 %}
+            {%- assign gridcols = "col-md-60 lookbook-text-column text-secondary-lookbook" -%}
+            {% else %}
+            {%- assign gridcols = "col-sm-30" -%}
+            {% endcase %}
+            <div class="{{ gridcols }} block-{{ block.id }}">
+               {% if forloop.index == 7 %}
+               <div class="row">
+                  <div class="col-md-30">
+                     {% endif %}
+                     {% case block.type %}
+                     {% when "image" %}
+                     {% if block.settings.image != blank %}
+                     <div class="primary-images  secondary-images {% if forloop.index > 5 %} secondary-image{{ loopNumber }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})"></div>
+                     {% endif %}
+                     {% when "video" %}
+                     <div class="primary-images" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                        {% if block.settings.video != blank and block.settings.video_button == true %}
+                        <a href="{{ block.settings.video }}" class="video-popup">{% include 'icon-play' %}</a>
+                        {% endif %}
+                        {% if block.settings.video_text != blank %}
+                           <div class="video-text">{{ block.settings.video_text }}</div>
+                        {% endif %}
+                     </div>
+                     <style>
+                        {% if block.settings.video_icon_color != blank %}
+                           .block-{{ block.id }} .video-popup {
+                              color:{{ block.settings.video_icon_color }};
+                              border: 2px solid {{ block.settings.video_icon_color }};
+                                    }
+                        {% else %}
+                           .block-{{ block.id }} .video-popup {
+                              color:#fff;
+                              border: 2px solid #fff;
+                                    }
+                        {% endif %}
+                        </style>
+                     {% when "product" %}
+                     <div class="primary-images  secondary-images {% if forloop.index > 5 %} secondary-image{{ loopNumber }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                        <div class="lookbook_product__detail text-center">
+                           <div class="prodcuct-detail-centered">
+                              {% if block.settings.title != blank %}
+                              <p class="product__title"> {{ block.settings.title }} </p>
+                              {% endif %}
+                              {% if block.settings.text != blank %}
+                              <p class="product__description"> {{ block.settings.text }} </p>
+                              {% endif %}
+                              {% if block.settings.price != blank %}
+                              <p class="product__price"> {{ block.settings.price }} </p>
+                              {% endif %}
+                              {% if block.settings.color != blank %}
+                              <p class="product__color"> {{ block.settings.color }} </p>
+                              {% endif %}
+                              {% if block.settings.product_link != blank %}
+                              <a href="{{ block.settings.product_link }}" class="btn">Shop Now</a>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     <style>
+                        {% if block.settings.product_text_color != blank %}
+                           .block-{{ block.id }} .lookbook_product__detail {
+                              color:{{ block.settings.product_text_color }};
+                                    }
+                        {% endif %}
+                     </style>
+                     {% when "text" %}
+                     {% if block.settings.text != blank %}
+                     <p> {{ block.settings.text }} </p>
+                     {% endif %}
+                     <div class="featured_content_buttons">
+                        {% if block.settings.cta_link1 != blank %}
+                        <a href="{{ block.settings.cta_link1 }}" class="btn"> {{ block.settings.cta_text1 }} </a>
+                        {% endif %}
+                        {% if block.settings.cta_link2 != blank %}
+                        <a href="{{ block.settings.cta_link2 }}" class="btn"> {{ block.settings.cta_text2 }} </a>
+                        {% endif %}
+                     </div>
+                     {% endcase %}
+                     {% if forloop.index == 7 %}
+                  </div>
+               </div>
+               {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+</div>
+{% schema %}
+  {
+   "name": "Lookbook 2",
+   "settings": [
+      {
+         "type"   : "image_picker",
+         "id"     : "background_image",
+         "label"  : "Background image"
+      },
+      {
+         "type"   : "checkbox",
+         "id"     : "background_overlay",
+         "label"  : "Overlay image with color?",
+		 "info": "Color and opacity found in 'General settings'",
+         "default": true
+      },
+      {
+         "type"   : "text",
+         "id"     : "title",
+         "label"  : "Hero title"
+      },
+      {
+         "type"   : "color",
+         "id"     : "hero_title_color",
+         "label"  : "Hero Title Color"
+      },
+      {
+         "type"   : "richtext",
+         "id"     : "text",
+         "label"  : "Text"
+      },
+      {
+         "type"   : "color",
+         "id"     : "text_color",
+         "label"  : "Text Color"
+      },
+      {
+         "type"   : "text",
+         "id"     : "cta_text1",
+         "label"  : "Button Text"
+      },
+      {
+         "type"   : "url",
+         "id"     : "cta_link1",
+         "label"  : "Button Link"
+      },
+      {
+         "type"   : "text",
+         "id"     : "cta_text2",
+         "label"  : "Button Text"
+      },
+      {
+         "type"   : "url",
+         "id"     : "cta_link2",
+         "label"  : "Button Link"
+      },
+		{
+        "type": "select",
+        "id": "text_layout",
+        "label": "Text Position",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Text on Left"
+          },
+          {
+            "value": "center",
+            "label": "Text on Center"
+          },
+          {
+            "value": "right",
+            "label": "Text on right"
+          }
+        ]
+      },
+		{
+        "type": "select",
+        "id": "text_align",
+        "label": "Text Aligment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left Aligned Text"
+          },
+          {
+            "value": "center",
+            "label": "Center Aligned Text"
+          },
+          {
+            "value": "right",
+            "label": "Right Aligned Text"
+          }
+        ]
+      }
+   ],
+   "blocks": [
+      {
+         "type"   : "image",
+         "name"   : "Image",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "image"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "video",
+         "name"   : "Video",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "Image"
+            },
+            {
+               "type"   : "video_url",
+               "id"     : "video",
+               "accept" : ["youtube","vimeo"],
+               "label"  : "Video"
+            },
+            {
+               "type": "richtext",
+               "id": "video_text",
+               "label": "Text"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "video_button",
+               "label"  : "Video Button",
+               "default": true
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            },
+            {
+               "type"   : "color",
+               "id"     : "video_icon_color",
+               "label"  : "Video icon color"
+            }
+         ]
+         },
+         {
+         "type"   : "Content",
+         "name"   : "Content",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "image"
+            },
+            {
+               "type"   : "text",
+               "id"     : "title",
+               "label"  : "Title"
+            },
+            {
+               "type"   : "textarea",
+               "id"     : "text",
+               "label"  : "Content"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text1",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link1",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text2",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link2",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "text",
+         "name"   : "text",
+         "settings"  : [
+            {
+               "type"   : "textarea",
+               "id"     : "text",
+               "label"  : "Conent"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text1",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link1",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text2",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link2",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "product",
+         "name"   : "Product",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "image"
+            },
+            {
+               "type"   : "text",
+               "id"     : "title",
+               "label"  : "Title"
+            },
+            {
+               "type"   : "textarea",
+               "id"     : "text",
+               "label"  : "Content"
+            },
+            {
+               "type"   : "text",
+               "id"     : "price",
+               "label"  :"Price"
+            },
+            {
+               "type"   : "text",
+               "id"     : "color",
+               "label"  : "Colors"
+            },
+            {
+               "type"   : "url",
+               "id"     : "product_link",
+               "label"  : "Product Link"
+            },
+            {
+               "type"   : "color",
+               "id"     : "product_text_color",
+               "label"  : "Product text color"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         }
+   ]
+}
+{% endschema %}

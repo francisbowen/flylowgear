@@ -1,0 +1,37 @@
+{%- assign art = article -%}
+{% if next_or_prev %}
+  {%- assign art = next_or_prev -%}
+{% endif %}
+<div class="{% if section.settings.enable_sidebar %}col-lg-30{% else %}col-xl-20 col-lg-30{% endif %}">
+  <div class="article-single">
+    {% if art.image %}
+      <a href="{{ art.url }}" class="article__list-image" style="background-image:url({{ art.image.src | img_url: '600x' }})"></a>
+    {% endif %}
+    <div class="article__grid-meta{% if art.image %} article__grid-meta--has-image{% endif %}">
+      <h2 class="article__title h3">
+        <a href="{{ art.url }}">{{ art.title }}</a>
+      </h2>
+      <div class="rte article__grid-excerpt">
+        {% if art.excerpt.size > 0 %}
+          {{ art.excerpt | strip_html | truncatewords: 25 }}
+        {% else %}
+          {{ art.content | strip_html | truncatewords: 25 }}
+        {% endif %}
+      </div>
+      <ul class="list--inline">
+        <li>
+          <a href="{{ art.url }}" class="article_btn">
+            {{ 'blogs.article.read_more' | t }}
+          </a>
+        </li>
+        {% if blog.comments_enabled? and art.comments_count > 0 %}
+          <li>
+            <a href="{{ art.url }}#comments" class="btn btn--secondary btn--small btn--link">
+              {{ 'blogs.comments.comments_with_count' | t: count: art.comments_count }}
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+{% assign article_part_gall = article_part | split: '<h6>GALLERY</h6>' %}
+{% for article_part_text in article_part_gall %}
+{%- assign image_splits = article_part_text | split: '<img ' -%}
+{% for image_split in image_splits %}
+  {% if image_split contains 'src="' %}
+	{%- assign image_split_video = image_split | split: 'src="' -%}
+	{% unless image_split_video[0] contains '<iframe' %}
+      {%- assign article_image_parts = image_split | split: '>' -%}
+      {%- assign image = '<img ' | append: article_image_parts[0] | append: '>' -%}
+
+      {%- assign article_image_classsplit = article_image_parts[0] | split: 'class="' -%}
+      {%- assign article_image_classes_parts = article_image_classsplit[1] | split: '"' -%}
+      {%- assign article_image_classes = article_image_classes_parts[0] -%}
+
+      {%- assign article_image_altsplit = article_image_parts[0] | split: 'alt="' -%}
+      {%- assign article_image_alt_parts = article_image_altsplit[1] | split: '"' -%}
+
+      {%- assign article_class = 'image-inline' -%}
+      {% if article_image_classes contains 'img-left' %}
+      {%- assign article_class = 'image-left' -%}
+      {% elsif article_image_classes contains 'img-right' %}
+      {%- assign article_class = 'image-right' -%}
+      {% elsif article_image_classes contains 'img-full' %}
+        {%- assign image_src_parts = image | split: 'src="' -%}
+        {%- assign image_url_parts = image_src_parts[1] | split: '"' -%}
+        {% capture image %}
+          <div class="parallax-background" style="background-image:url({{ image_url_parts[0] }});"></div>
+        {% endcapture %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      {%- assign caption_default = article_image_alt_parts[0] -%}
+      {%- assign article_content_remaining = image_split | remove: article_image_parts[0] | remove_first: '>' -%}
+      {%- assign caption_search = article_content_remaining | slice: 0, 9 -%}
+      {%- assign caption_remove = '' -%}
+      {% if caption_search contains '<small>' %}
+        {%- assign caption_splits = article_content_remaining | remove: '<small>' | split: '</small>' -%}
+        {%- assign caption_default = caption_splits[0] -%}
+        {%- assign caption_remove = '<small>' | append: caption_default | append: '<small>' -%}
+      {% endif %}
+      <div class="image-callout {{ article_class }}">
+        {{ image }}
+        <p class="image-caption">{{ caption_default }}</p>
+      </div>
+      {% if article_image_classes contains 'img-full' %}
+        <div class="container">
+          <div class="row">
+            <div class="col-md-40 offset-md-10">
+              <div class="rte" itemprop="articleBody">
+                <div class="article-content">
+      {% endif %}
+      {%- assign article_content_together = image_split | remove: article_image_parts[0] | remove_first: '>' | remove: caption_remove -%}
+      {{ article_content_together }}
+    {% else %}
+      {{ image_split }}
+    {% endunless %}
+  {% else %}
+    {{ image_split }}
+  {% endif %}
+{% endfor %}
+{% if forloop.index == 1 %}
+                  {{ article-gallery }}
+{% endif %}
+{% endfor %}

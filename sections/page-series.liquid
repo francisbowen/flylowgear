@@ -1,0 +1,95 @@
+{% include 'series' %}
+
+{% schema %}
+  {
+    "name": "Series",
+    "class": "index-section",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Top Video Section"
+        },
+        {
+            "type": "image_picker",
+            "id": "video_image",
+            "label": "Video Background Image"
+        },
+        {
+            "type": "text",
+            "id": "video_id",
+            "label": "Video ID"
+        },
+          {
+            "type": "text",
+            "id": "video_title",
+            "label": "Video Title"
+        },
+        {
+        "type": "header",
+        "content": "Episode Pages Content"
+      },
+      {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": " Westward Series"
+        },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Description"
+        },
+      {
+        "type": "header",
+        "content": "Series Tags"
+      },
+      {
+        "type": "text",
+        "id": "tags",
+        "label": "Series",
+        "default": "Season 3, Season 2, Season 1"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Episode",
+        "settings": [
+        {
+            "type": "checkbox",
+            "id": "coming_soon",
+            "label": "Coming Soon?"
+        },
+        {
+            "type": "text",
+            "id": "tag",
+            "label": "Series",
+            "default": "Season 1"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "The Coach"
+        },
+         {
+            "type": "text",
+            "id": "episode",
+            "label": "Episode",
+            "default": "Episode 1"
+        },
+        {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+          {
+            "type": "url",
+            "id": "episode_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

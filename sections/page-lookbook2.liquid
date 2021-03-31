@@ -1,0 +1,721 @@
+<script src="https://f.vimeocdn.com/js/froogaloop2.min.js"></script>
+<script src="https://player.vimeo.com/api/player.js"></script>
+<style>
+/* Hide Play button + controls on iOS */
+video::-webkit-media-controls {
+    display:none !important;
+}
+video.thevideo {
+   position: absolute;
+    left: 0;
+    top: 0;
+}
+.overlay {
+   background-size:cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   padding:20% 0;
+   position: absolute;
+   left: 0;
+   z-index: 9;
+   width: 100%;
+}
+  .video-hover{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .lookbook-section .primary-images .video-popup {
+  	z-index:9;
+  }
+</style>
+      
+
+{% if section.settings.video %}
+  <div id="video-channel" class="pagehero westward-hero" style="background-image: url('{{section.settings.hero_image | img_url: '1500x' }}')">
+    <div class="video-wrapper">
+      <iframe id="vimeo" src="" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" allow="autoplay; fullscreen"></iframe>
+    </div>
+    <div class="holder">
+      <a class="westward-video" data-framesrc="{{section.settings.video_id}}">
+        <img class="play-icon" src="{{'play-icon.png' | asset_url}}" alt="Play Westward Trailer">
+      </a>
+    </div>
+  </div>
+{% else %}
+<div class="collection-hero">
+   <div class="collection-hero__image slideshow__overlay" style="background-image: url({{section.settings.hero_image | img_url: '1500x'}});">
+      <div class="collection-wrap-title container container-banner">
+         <div class="collection-hero__title-wrapper">
+            <div class="special-collection-text col-md-60">
+               <h1 class="collection-hero__title hero-title text-center">{{section.settings.hero_title}}</h1>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endif %}
+
+<div class="lookbook-navigate-section">
+   <div class="container">
+      {% if section.settings.hero_text !=blank %}
+      {{section.settings.hero_text}}
+      {% endif %}
+      {% if section.settings.main_title != blank %}
+         <h2 class="lookbook-navigation-title">{{ section.settings.main_title }}</h2>
+      {% endif %}
+      <ul>
+        {% if section.settings.sub_title1 != blank %}
+         <li>
+            <a href="#" id="blackcountry1">
+               <h3>{{ section.settings.sub_title1 }}</h3>
+           </a>
+         </li>
+        {% endif %}
+        
+        {% if section.settings.sub_title2 != blank %}
+         <li>
+            <a href="#" id="bigmountain1">
+               <h3>{{ section.settings.sub_title2 }}</h3>
+           </a>
+         </li>
+        {% endif %}
+      </ul>
+   </div>
+</div>
+<style>
+  .text_layout-center {
+  	justify-content:center;
+  }
+  .text_layout-right {
+  	justify-content:flex-end;
+  }
+</style>
+<div class="lookbook-section section-1" id="blackcountry">
+   <div class="lookbook-section-image {% if section.settings.background_overlay %}hero__overlay{% endif %}" style="background-image:url({{ section.settings.background_image | img_url: '2000x' }});">
+   </div>
+   <div class="container">
+      <div class="lookbook-primary-text">
+         <div class="row 
+                     {% if section.settings.text_layout != blnak %}
+                     text_layout-{{ section.settings.text_layout }}
+                     {% endif %}
+                     {% if section.settings.text_align != blnak %}
+                     text-{{ section.settings.text_align }}
+                     {% endif %}
+                     ">
+            <div class="col-lg-40 col-md-60 col-xl-30">
+               {% if section.settings.title !=blank %}
+               <h2 {% if section.settings.hero_title_color != blank %}style="color:{{ section.settings.hero_title_color }}{% endif %}                          
+                          ">{{ section.settings.title }}</h2>
+               {% endif %}
+              <div {% if section.settings.text_color != blank %}style="color:{{ section.settings.text_color }}{% endif %}                          
+                          "> 
+              {% if section.settings.text != blank %}
+               <p>{{ section.settings.text }}</p>
+               {% endif %}
+              </div>
+               <div class="lookbook__primary_buttons">
+                  {% if section.settings.cta_text1 != blank and section.settings.cta_link1 != blank %}
+                  <a href="{{ section.settings.cta_link1 }}" class="btn">{{ section.settings.cta_text1 }}</a>
+                  {% endif %}
+                  {% if section.settings.cta_text2 != blank and section.settings.cta_link2 != blank %}
+                  <a href="{{ section.settings.cta_link2 }}" class="btn">{{ section.settings.cta_text2 }}</a>
+                  {% endif %}
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="look-primary-images">
+         <div class="row">
+            {% for block in section.blocks %}
+            {% if forloop.index <= 6 %}
+            {% case forloop.index %}
+            {% when 1 %}
+            {%- assign gridcols = "col-sm-25" -%}
+            {% when 2 %}
+            {%- assign gridcols = "col-sm-15" -%}
+            {% when 3 %}
+            {%- assign gridcols = "col-sm-20" -%}
+            {% when 4 %}
+            {%- assign gridcols = "col-sm-35" -%}
+            {% when 5 %}
+            {%- assign gridcols = "col-sm-25" -%}
+            {% when 6 %}
+            {%- assign gridcols = "col-md-35 lookbook-text-column" -%}
+            {% endcase %}
+            <div class="{{ gridcols }} block-{{ block.id }}">
+               {% case block.type %}
+               {% when "image" %}
+               {% if block.settings.image != blank %}
+               <div class="primary-images {% if forloop.index > 1 and forloop.index <= 5 %}primary-image{{ forloop.index }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})"></div>
+               {% endif %}
+               {% when "video" %}
+               <div id="videoslist{{block.id}}" class="primary-images vid-block {% if block.settings.video.id != blank %} hovervideo {% endif %}">
+                  <div class="overlay" style="background-image:url({{ block.settings.image | img_url: '800x' }})"></div>
+                  {% if block.settings.video_link != blank and block.settings.video_button == true %}
+                  <a href="#video-{{ block.id }}" class="video-popup-html video-popup">{% include 'icon-play' %}</a>
+                  {% endif %}
+                 <video muted="muted" class="thevideo" width="130%" loop preload="auto" poster="{{ block.settings.image | img_url: '800x' }}">
+                  <source src="{{ block.settings.video_link }}" type="video/mp4">
+                	Your browser does not support the video tag.
+                </video>
+                {% if block.settings.video_link != blank and block.settings.video_button == true %}
+                <div id="video-{{ block.id }}" class="white-popup html-video-width mfp-hide p-0">
+                  <video controls loop preload="auto" autoplay style="max-width:100%;">
+                     <source src="{{ block.settings.video_link }}" type="video/mp4">
+                  </video>
+               </div>
+               {% endif %}
+                {% if block.settings.video_text != blank %}
+                   <div class="video-text">{{ block.settings.video_text }}</div>
+                {% endif %}
+                {% comment %} 
+                 <iframe id="videoslist{{block.id}}" class="video-hover" src="https://player.vimeo.com/video/{{ block.settings.video.id }}?title=0&byline=0&portrait=0&autoplay=false" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" 
+                         allowfullscreen="" allow="fullscreen"></iframe>
+                 {% endcomment %} 
+               </div>
+               <style>
+                  {% if block.settings.video_icon_color != blank %}
+                  .block-{{ block.id }} .video-popup {
+                  color:{{ block.settings.video_icon_color }};
+                  border: 2px solid {{ block.settings.video_icon_color }};
+                  }
+                 .lookbook-section .hovervideo:hover {
+  						background:#000 !important;
+  					}
+                  {% endif %}
+               </style>
+               <script>
+                  /* $(document).ready(function(){
+                     $("#videoslist{{block.id}} .thevideo").hover( hoverVideo, hideVideo );
+                  function hoverVideo(e) {  
+                     $('video', this).get(0).play(); 
+                  }
+                  function hideVideo(e) {
+                     $('video', this).get(0).pause(); 
+                  }
+
+                  }); */
+               </script>
+               {% when "product" %}
+               <div class="primary-images {% if forloop.index > 1 and forloop.index <= 5 %}primary-image{{ forloop.index }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                  <div class="lookbook_product__detail text-center">
+                     <div class="prodcuct-detail-centered">
+                        {% if block.settings.title != blank %}
+                        <p class="product__title"> {{ block.settings.title }} </p>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                        <p class="product__description"> {{ block.settings.text }} </p>
+                        {% endif %}
+                        {% if block.settings.price != blank %}
+                        <p class="product__price"> {{ block.settings.price }} </p>
+                        {% endif %}
+                        {% if block.settings.color != blank %}
+                        <p class="product__color"> {{ block.settings.color }} </p>
+                        {% endif %}
+                        {% if block.settings.product_link != blank %}
+                        <a href="{{ block.settings.product_link }}" class="btn">Shop Now</a>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+               <style>
+                  {% if block.settings.product_text_color != blank %}
+                  .block-{{ block.id }} .lookbook_product__detail {
+                  color:{{ block.settings.product_text_color }};
+                  }
+                  {% endif %}
+               </style>
+               {% when "text" %}
+               {% if block.settings.text != blank %}
+               <p> {{ block.settings.text }} </p>
+               {% endif %}
+               <div class="featured_content_buttons">
+                  {% if block.settings.cta_link1 != blank %}
+                  <a href="{{ block.settings.cta_link1 }}" class="btn"> {{ block.settings.cta_text1 }} </a>
+                  {% endif %}
+                  {% if block.settings.cta_link2 != blank %}
+                  <a href="{{ block.settings.cta_link2 }}" class="btn"> {{ block.settings.cta_text2 }} </a>
+                  {% endif %}
+               </div>
+               {% endcase %}
+            </div>
+            {% endif %}
+            {% endfor %}
+         </div>
+      </div>
+      <div class="look-secondary-images">
+         <div class="row">
+            {% for block in section.blocks %}
+            {% if forloop.index > 6 %}
+            {%- assign loopNumber = forloop.index | minus: 7 -%}
+            {% case forloop.index %}
+            {% when 7 %}
+            {%- assign gridcols = "col-md-60 lookbook-text-column text-secondary-lookbook" -%}
+            {% else %}
+            {%- assign gridcols = "col-sm-30" -%}
+            {% endcase %}
+            <div class="{{ gridcols }} block-{{ block.id }}">
+               {% if forloop.index == 7 %}
+               <div class="row">
+                  <div class="col-md-30">
+                     {% endif %}
+                     {% case block.type %}
+                     {% when "image" %}
+                     {% if block.settings.image != blank %}
+                     <div class="primary-images  secondary-images {% if forloop.index > 5 %} secondary-image{{ loopNumber }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})"></div>
+                     {% endif %}
+                     {% when "video" %}
+                     <div class="primary-images" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                        {% if block.settings.video != blank %}
+                        <a href="{{ block.settings.video }}" class="ssss video-popup">{% include 'icon-play' %}</a>
+                        {% endif %}
+                     </div>
+                     <style>
+                        {% if block.settings.video_icon_color != blank %}
+                        .block-{{ block.id }} .video-popup {
+                        color:{{ block.settings.video_icon_color }};
+                        border: 2px solid {{ block.settings.video_icon_color }};
+                        }
+                        {% endif %}
+                     </style>
+                     {% when "product" %}
+                     <div class="primary-images secondary-images {% if forloop.index > 5 %} secondary-image{{ loopNumber }}{% endif %}" style="background-image:url({{ block.settings.image | img_url: '800x' }})">
+                        <div class="lookbook_product__detail text-center">
+                           <div class="prodcuct-detail-centered">
+                              {% if block.settings.title != blank %}
+                              <p class="product__title"> {{ block.settings.title }} </p>
+                              {% endif %}
+                              {% if block.settings.text != blank %}
+                              <p class="product__description"> {{ block.settings.text }} </p>
+                              {% endif %}
+                              {% if block.settings.price != blank %}
+                              <p class="product__price"> {{ block.settings.price }} </p>
+                              {% endif %}
+                              {% if block.settings.color != blank %}
+                              <p class="product__color"> {{ block.settings.color }} </p>
+                              {% endif %}
+                              {% if block.settings.product_link != blank %}
+                              <a href="{{ block.settings.product_link }}" class="btn">Shop Now</a>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     <style>
+                        {% if block.settings.product_text_color != blank %}
+                        .block-{{ block.id }} .lookbook_product__detail {
+                        color:{{ block.settings.product_text_color }};
+                        }
+                        {% endif %}
+                     </style>
+                     {% when "text" %}
+                     {% if block.settings.text != blank %}
+                     <p> {{ block.settings.text }} </p>
+                     {% endif %}
+                     <div class="featured_content_buttons">
+                        {% if block.settings.cta_link1 != blank %}
+                        <a href="{{ block.settings.cta_link1 }}" class="btn"> {{ block.settings.cta_text1 }} </a>
+                        {% endif %}
+                        {% if block.settings.cta_link2 != blank %}
+                        <a href="{{ block.settings.cta_link2 }}" class="btn"> {{ block.settings.cta_text2 }} </a>
+                        {% endif %}
+                     </div>
+                     {% endcase %}
+                     {% if forloop.index == 7 %}
+                  </div>
+               </div>
+               {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+</div>
+  <script>
+   $(".westward-video").click(function () {
+    $(".holder").hide();
+    var t = $(this).attr("data-frameSrc"),
+     o = "https://player.vimeo.com/video/" + t + "?title=0&byline=0&portrait=0&autoplay=true";
+    $("#vimeo").attr("src", o), document.getElementById("video-channel").style.backgroundImage = "none", document.getElementById("video-channel").style.backgroundColor = "#000"
+   });
+  </script>
+<script>
+$(document).ready(function(){
+   $('.video-popup').magnificPopup({
+      type:'iframe',
+      iframe: {
+		markup: '<div class="mfp-iframe-scaler">' +
+			'<div class="mfp-close"></div>' +
+			'<iframe class="mfp-iframe" frameborder="0" allow="autoplay"></iframe>' +
+			'</div>',
+		patterns: {
+			youtube: {
+				index: 'youtube.com/',
+				id: 'v=',
+				src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+			}
+		}
+	}
+   });
+   $('.video-popup-html').magnificPopup({
+      type:'inline'
+   });
+});
+
+
+
+$("#blackcountry1").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#blackcountry").offset().top
+    }, 1000);
+});
+$("#bigmountain1").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#bigmountain").offset().top
+    }, 1000);
+});
+</script>
+<script>
+   $(document).ready(function(){
+      $('.vid-block').hover(function(){
+         $(this).find('video')[0].play();
+         $(this).find('.overlay').hide();
+      },function(){
+         $(this).find('video')[0].pause();
+         $(this).find('.overlay').show();
+      })
+   })
+</script>
+{% schema %}
+  {
+   "name": "Lookbook 1",
+   "settings": [
+      
+      {
+      "type": "header",
+      "content": "Top Video Section / Main Image"
+      },
+		{
+        "type": "checkbox",
+        "id": "video",
+        "label": "Video",
+        "default": true
+      },
+      {
+      "type"   : "image_picker",
+      "id"     : "hero_image",
+      "label"  : "Video Background Image/ Main image"
+      },
+      {
+      "type": "text",
+      "id": "video_id",
+      "label": "Vidoe ID",
+	  "default": "370081705"
+      },
+      {
+         "type"   : "text",
+         "id"     : "hero_title",
+         "label"  : "Hero title"
+      },
+      {
+         "type"   : "text",
+         "id"     : "main_title",
+         "label"  : "Main Title"
+      },
+      {
+         "type"   : "text",
+         "id"     : "sub_title1",
+         "label"  : "Sub Title 1"
+      },
+      {
+         "type"   : "text",
+         "id"     : "sub_title2",
+         "label"  : "Sub Title 2"
+      },
+      {
+         "type"   : "richtext",
+         "id"     : "hero_text",
+         "label"  : "Main Text"
+      },
+      {
+         "type"   : "image_picker",
+         "id"     : "background_image",
+         "label"  : "Background image"
+      },
+      {
+         "type"   : "checkbox",
+         "id"     : "background_overlay",
+         "label"  : "Overlay image with color?",
+		 "info": "Color and opacity found in 'General settings'",
+         "default": true
+      },
+      {
+         "type"   : "text",
+         "id"     : "title",
+         "label"  : "Hero title"
+      },
+      {
+         "type"   : "color",
+         "id"     : "hero_title_color",
+         "label"  : "Hero Title Color"
+      },
+      {
+         "type"   : "richtext",
+         "id"     : "text",
+         "label"  : "Text"
+      },
+      {
+         "type"   : "color",
+         "id"     : "text_color",
+         "label"  : "Text Color"
+      },
+      {
+         "type"   : "text",
+         "id"     : "cta_text1",
+         "label"  : "Button Text"
+      },
+      {
+         "type"   : "url",
+         "id"     : "cta_link1",
+         "label"  : "Button Link"
+      },
+      {
+         "type"   : "text",
+         "id"     : "cta_text2",
+         "label"  : "Button Text"
+      },
+      {
+         "type"   : "url",
+         "id"     : "cta_link2",
+         "label"  : "Button Link"
+      },
+		{
+        "type": "select",
+        "id": "text_layout",
+        "label": "Text Position",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Text on Left"
+          },
+          {
+            "value": "center",
+            "label": "Text on Center"
+          },
+          {
+            "value": "right",
+            "label": "Text on right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text Aligment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left Aligned Text"
+          },
+          {
+            "value": "center",
+            "label": "Center Aligned Text"
+          },
+          {
+            "value": "right",
+            "label": "Right Aligned Text"
+          }
+        ]
+      }
+   ],
+   "blocks": [
+      {
+         "type"   : "image",
+         "name"   : "Image",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "image"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "video",
+         "name"   : "Video",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "Image"
+            },
+            {
+               "type"   : "html",
+               "id"     : "video_link",
+               "label"  : "Video URL"
+            },
+            {
+               "type": "richtext",
+               "id": "video_text",
+               "label": "Text"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "video_button",
+               "label"  : "Video Button",
+               "default": true
+            },
+            {
+               "type"   : "color",
+               "id"     : "video_icon_color",
+               "label"  : "Video icon color"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "content",
+         "name"   : "Content",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "image"
+            },
+            {
+               "type"   : "text",
+               "id"     : "title",
+               "label"  : "Title"
+            },
+            {
+               "type"   : "textarea",
+               "id"     : "text",
+               "label"  : "Content"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text1",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link1",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text2",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link2",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "text",
+         "name"   : "Text",
+         "settings"  : [
+            {
+               "type"   : "textarea",
+               "id"     : "text",
+               "label"  : "Conent"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text1",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link1",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "text",
+               "id"     : "cta_text2",
+               "label"  : "Button Text"
+            },
+            {
+               "type"   : "url",
+               "id"     : "cta_link2",
+               "label"  : "Button Link"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         },
+         {
+         "type"   : "product",
+         "name"   : "Product",
+         "settings"  : [
+            {
+               "type"   : "image_picker",
+               "id"     : "image",
+               "label"  : "image"
+            },
+            {
+               "type"   : "text",
+               "id"     : "title",
+               "label"  : "Title"
+            },
+            {
+               "type"   : "textarea",
+               "id"     : "text",
+               "label"  : "Content"
+            },
+            {
+               "type"   : "text",
+               "id"     : "price",
+               "label"  :"Price"
+            },
+            {
+               "type"   : "text",
+               "id"     : "color",
+               "label"  : "Colors"
+            },
+            {
+               "type"   : "url",
+               "id"     : "product_link",
+               "label"  : "Product Link"
+            },
+            {
+               "type"   : "color",
+               "id"     : "product_text_color",
+               "label"  : "Product text color"
+            },
+            {
+               "type"   : "checkbox",
+               "id"     : "mobile_display",
+               "label"  : "disply on mobile"
+            }
+         ]
+         }
+      ]
+   }
+{% endschema %}

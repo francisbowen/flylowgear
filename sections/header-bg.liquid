@@ -1,0 +1,43 @@
+{% include 'header-image' %}
+{% schema %}
+
+  {
+    "name": "Page Header",
+    "settings": [   
+    {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "page_header",
+        "name": "Page Header",
+        "settings": [
+            {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "page",
+            "id": "page",
+            "label": "Page",
+            "info": "Header image defined below will be used for this specific page"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Header image for desktop"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Header image for mobile"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

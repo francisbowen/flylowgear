@@ -1,0 +1,441 @@
+<div class="container">
+  <div class="row">
+    <article class="col-md-40 offset-md-10"> 
+      <div class="rte">
+        {{ page.content }}
+      </div>
+      <div class="flip-container flipped">
+        <div class="flipper">
+          <div class="front">
+            <div id="FjallProCode" class="form-vertical">
+              <p><b><a class="flipme" href="#"><u>Already have a Pro Code? Enter it here</u></a></b></p>
+              <p class="error hide"></p>
+              <form class="integro" id="create_customer">
+                <label for="FirstName" class="label--hidden">{{ 'customer.register.first_name' | t }}</label>
+                <input type="text" name="customer[first_name]" id="FirstName" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+
+                <label for="LastName" class="label--hidden">{{ 'customer.register.last_name' | t }}</label>
+                <input type="text" name="customer[last_name]" id="LastName" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+
+                <label for="Email" class="label--hidden">{{ 'customer.register.email' | t }}</label>
+                <input type="email" name="customer[email]" id="Email" class="{% if form.errors contains 'email' %} input--error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off" required>
+
+                <label for="Addy1" class="label--hidden">Address</label>
+                <input type="text" name="customer_address[address1]" id="Addy1" placeholder="Address" value="">
+
+                <label for="Addy2" class="label--hidden">Street Address</label>
+                <input type="text" name="customer_address[address2]" id="Addy2" placeholder="Address Line 2" value=""> 
+
+                <label for="city" class="label--hidden">City</label>
+                <input type="text" name="customer_address[city]" id="city" placeholder="City" value="">  
+
+                <label for="province" class="label--hidden">State / Province</label>
+                <input type="text" name="customer_address[province]" id="province" placeholder="State / Province" value="">  
+
+                <label for="zip" class="label--hidden">zip</label>
+                <input type="text" name="customer_address[zip]" id="zip" placeholder="Zip Code" value="">  
+
+                <label for="country" class="label--hidden">Country</label>
+                <select name="customer_address[country]" id="country" tabindex="13"><option data-code="US" selected="selected">United States</option><option data-code="CA">Canada</option><option data-code="AU">Australia</option><option data-code="GB">United Kingdom</option><option disabled="disabled" value="---">---</option><option data-code="AD">Andorra</option><option data-code="AR">Argentina</option><option data-code="AU">Australia</option><option data-code="AT">Austria</option><option data-code="BB">Barbados</option><option data-code="BY">Belarus</option><option data-code="BE">Belgium</option><option data-code="BM">Bermuda</option><option data-code="BO">Bolivia</option><option data-code="VG">British Virgin Islands</option><option data-code="CA">Canada</option><option data-code="CR">Costa Rica</option><option data-code="HR">Croatia</option><option data-code="CU">Cuba</option><option data-code="CY">Cyprus</option><option data-code="CZ">Czech Republic</option><option data-code="DK">Denmark</option><option data-code="DO">Dominican Republic</option><option data-code="EE">Estonia</option><option data-code="FI">Finland</option><option data-code="FR">France</option><option data-code="GE">Georgia</option><option data-code="DE">Germany</option><option data-code="GI">Gibraltar</option><option data-code="GR">Greece</option><option data-code="GL">Greenland</option><option data-code="GG">Guernsey</option><option data-code="HK">Hong Kong SAR China</option><option data-code="HU">Hungary</option><option data-code="IS">Iceland</option><option data-code="IE">Ireland</option><option data-code="IM">Isle of Man</option><option data-code="IL">Israel</option><option data-code="IT">Italy</option><option data-code="JP">Japan</option><option data-code="JE">Jersey</option><option data-code="LV">Latvia</option><option data-code="LI">Liechtenstein</option><option data-code="LT">Lithuania</option><option data-code="LU">Luxembourg</option><option data-code="MT">Malta</option><option data-code="MC">Monaco</option><option data-code="ME">Montenegro</option><option data-code="NL">Netherlands</option><option data-code="NZ">New Zealand</option><option data-code="NF">Norfolk Island</option><option data-code="NO">Norway</option><option data-code="PL">Poland</option><option data-code="PT">Portugal</option><option data-code="RO">Romania</option><option data-code="WS">Samoa</option><option data-code="SG">Singapore</option><option data-code="SK">Slovakia</option><option data-code="SI">Slovenia</option><option data-code="ZA">South Africa</option><option data-code="KR">South Korea</option><option data-code="ES">Spain</option><option data-code="SE">Sweden</option><option data-code="CH">Switzerland</option><option data-code="TW">Taiwan</option><option data-code="TH">Thailand</option><option data-code="TR">Turkey</option><option data-code="UA">Ukraine</option><option data-code="GB">United Kingdom</option><option data-code="US">United States</option></select> 
+
+                <label for="phone" class="label--hidden">phone</label>
+                <input type="text" name="customer_address[phone]" id="phone" placeholder="Phone" value="">  
+
+                <div class="product-form__item">
+                  <label for="logo">Upload Paystub or Business Card Proof</label>
+                  <input id="logo" type="file" /> 
+                  <button class="uploaded btn realsubmit">Upload</button>
+
+                  <label for="file_name" class="label--hidden">File Name</label>
+                  <input id="file_name" type="hidden" name="customer[note][File Name]" />
+                  <label for="file_link" class="label--hidden">File Link</label>
+                  <input id="file_link" type="hidden" name="customer[note][File Link]" />  
+                </div>
+
+                <label for="comments" class="label--hidden">Proof</label>
+                <input type="text" id="comments" name="customer[note][Comments]" rows="5" cols="50" wrap="soft" placeholder="Additional Comments">
+
+                <label for="team" class="label--hidden">team</label>
+                <input type="text" name="customer[note][Team]" id="team" placeholder="Company / team / organization" value="">  
+
+                <h5>Pro/Athlete Classification</h5>
+                <input type="radio" name="customer[tags][tag-2]" id="proclass1" value="Industry">
+                <label for="proclass1">Industry<br></label><br> 
+
+                <input type="radio" name="customer[tags][tag-2]" id="proclass2" value="Professional">
+                <label for="proclass2">Professional<br></label><br> 
+
+                <input type="radio" name="customer[tags][tag-2]" id="proclass3" value="shop">
+                <label for="proclass3">Shop<br></label><br> 
+
+                <button type="submit" class="btn zapsubmit">Apply For a Pro Account</button>
+              </form>
+            </div>
+          </div>
+          <div class="back">
+            <div id="FjallProLogin">
+              <div class="form-vertical">
+                <p class="error hide"></p>
+                <p><b><a class="flipme" href="#"><u>Don't have a Pro Code? Apply here</u></a></b></p>
+                <div id="adjusters">
+                  <input type="checkbox" name="procode_necessary" id="login_remove" value="login" />
+                  <label for="login_remove">Have a Flylow Account?</label>
+                </div>
+                <form class="integro integro2">
+                  <label for="FirstName2" class="label--hidden">{{ 'customer.register.first_name' | t }}</label>
+                  <input type="text" name="customer[first_name]" id="FirstName2" class="login_remove" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+
+                  <label for="LastName2" class="label--hidden">{{ 'customer.register.last_name' | t }}</label>
+                  <input type="text" name="customer[last_name]" id="LastName2" class="login_remove" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+
+                  <label for="Email2" class="label--hidden">{{ 'customer.register.email' | t }}</label>
+                  <input type="email" name="customer[email]" id="Email2" class="{% if form.errors contains 'email' %} input--error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off" required>
+
+                  <label for="CreatePassword2" class="label--hidden">{{ 'customer.register.password' | t }}</label>
+                  <input type="password" name="customer[password]" id="CreatePassword2" class="{% if form.errors contains 'password' %} input--error{% endif %}" placeholder="{{ 'customer.register.password' | t }}" required>
+
+                  <label for="Addy1_2" class="label--hidden">Address</label>
+                  <input type="text" name="customer_address[address1]" id="Addy1_2" class="login_remove" placeholder="Address" value="">
+
+                  <label for="Addy2_2" class="label--hidden">Street Address</label>
+                  <input type="text" name="customer_address[address2]" id="Addy2_2" class="login_remove" placeholder="Address Line 2" value=""> 
+
+                  <label for="city2" class="label--hidden">City</label>
+                  <input type="text" name="customer_address[city]" id="city2" class="login_remove" placeholder="City" value="">  
+
+                  <label for="province2" class="label--hidden">State / Province</label>
+                  <input type="text" name="customer_address[province]" id="province2" class="login_remove" placeholder="State / Province" value="">  
+
+                  <label for="zip2" class="label--hidden">zip</label>
+                  <input type="text" name="customer_address[zip]" id="zip2" class="login_remove" placeholder="Zip Code" value="">  
+
+                  <label for="country2" class="label--hidden">Country</label>
+                  <select name="customer_address[country]" id="country2" class="login_remove" tabindex="13"><option data-code="US" selected="selected">United States</option><option data-code="CA">Canada</option><option data-code="AU">Australia</option><option data-code="GB">United Kingdom</option><option disabled="disabled" value="---">---</option><option data-code="AD">Andorra</option><option data-code="AR">Argentina</option><option data-code="AU">Australia</option><option data-code="AT">Austria</option><option data-code="BB">Barbados</option><option data-code="BY">Belarus</option><option data-code="BE">Belgium</option><option data-code="BM">Bermuda</option><option data-code="BO">Bolivia</option><option data-code="VG">British Virgin Islands</option><option data-code="CA">Canada</option><option data-code="CR">Costa Rica</option><option data-code="HR">Croatia</option><option data-code="CU">Cuba</option><option data-code="CY">Cyprus</option><option data-code="CZ">Czech Republic</option><option data-code="DK">Denmark</option><option data-code="DO">Dominican Republic</option><option data-code="EE">Estonia</option><option data-code="FI">Finland</option><option data-code="FR">France</option><option data-code="GE">Georgia</option><option data-code="DE">Germany</option><option data-code="GI">Gibraltar</option><option data-code="GR">Greece</option><option data-code="GL">Greenland</option><option data-code="GG">Guernsey</option><option data-code="HK">Hong Kong SAR China</option><option data-code="HU">Hungary</option><option data-code="IS">Iceland</option><option data-code="IE">Ireland</option><option data-code="IM">Isle of Man</option><option data-code="IL">Israel</option><option data-code="IT">Italy</option><option data-code="JP">Japan</option><option data-code="JE">Jersey</option><option data-code="LV">Latvia</option><option data-code="LI">Liechtenstein</option><option data-code="LT">Lithuania</option><option data-code="LU">Luxembourg</option><option data-code="MT">Malta</option><option data-code="MC">Monaco</option><option data-code="ME">Montenegro</option><option data-code="NL">Netherlands</option><option data-code="NZ">New Zealand</option><option data-code="NF">Norfolk Island</option><option data-code="NO">Norway</option><option data-code="PL">Poland</option><option data-code="PT">Portugal</option><option data-code="RO">Romania</option><option data-code="WS">Samoa</option><option data-code="SG">Singapore</option><option data-code="SK">Slovakia</option><option data-code="SI">Slovenia</option><option data-code="ZA">South Africa</option><option data-code="KR">South Korea</option><option data-code="ES">Spain</option><option data-code="SE">Sweden</option><option data-code="CH">Switzerland</option><option data-code="TW">Taiwan</option><option data-code="TH">Thailand</option><option data-code="TR">Turkey</option><option data-code="UA">Ukraine</option><option data-code="GB">United Kingdom</option><option data-code="US">United States</option></select> 
+
+                  <label for="phone2" class="label--hidden">Phone</label>
+                  <input type="text" name="customer_address[phone]" id="phone2" class="login_remove" placeholder="Phone" value="">  
+
+                  <label for="team2" class="label--hidden">team</label>
+                  <input type="text" name="customer[note][Team]" id="team2" placeholder="Company / team / organization" value="">  
+
+                  <label for="code2" class="label--hidden">pre-approved code</label>
+                  <input type="text" id="code2" name="customer[note][code]" placeholder="Please enter your pre-approved Pro Code" required> 
+
+                  <button type="submit" class="btn zapsubmit">Create Account</button>
+                </form>
+                <p><a id="RecoverPassword" class="passwordreset-toggle" href="#RecoverPasswordForm">{{ 'customer.login.forgot_password' | t }}</a></p>
+              </div>
+            </div>
+
+            <div id="RecoverPasswordForm" class="hide">
+
+              <h2>{{ 'customer.recover_password.title' | t }}</h2>
+              <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+              <div class="form-vertical">
+                {% form 'recover_customer_password' %}
+
+                {{ form.errors | default_errors }}
+
+                {% comment %}
+                Add a hidden span to indicate the form was submitted succesfully.
+                {% endcomment %}
+                {% if form.posted_successfully? %}
+                <span class="hide reset-password-success"></span>
+                {% endif %}
+
+                <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+                <input type="email" value="" name="email" id="RecoverEmail" class="input-full"autocorrect="off" autocapitalize="off">
+
+                <p>
+                  <input type="submit" class="btn" value="{{ 'customer.recover_password.submit' | t }}">
+                </p>
+
+                <p><a id="HideRecoverPasswordLink" class="passwordreset-toggle">{{ 'customer.recover_password.cancel' | t }}</a></p>
+                {% endform %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<div id="delayedlogin" class="hide">
+  {% form 'customer_login' %}
+    {{ form.errors | default_errors }}
+    <div style="text-align:left;">
+
+      <label for="Email_Delayed" class="label--hidden">{{ 'customer.register.email' | t }}</label>
+      <input type="email" name="customer[email]" id="Email_Delayed" class="{% if form.errors contains 'email' %} input--error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off" required>
+
+      <label for="Password_Delayed" class="label--hidden">{{ 'customer.register.password' | t }}</label>
+      <input type="password" name="customer[password]" id="Password_Delayed" class="{% if form.errors contains 'password' %} input--error{% endif %}" placeholder="{{ 'customer.register.password' | t }}" required>
+
+      <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn realsubmit">
+    </div>
+  {% endform %}
+</div>
+
+<style>
+  .form-vertical input.hide,
+  .form-vertical select.hide,
+  .form-vertical textarea.hide {
+    display: none;
+  }
+  .btn.uploaded {
+    background-color: #fff;
+    color: #3d4246;
+    border-color: #e8e9eb;
+    display: block;
+  }
+  /* entire container, keeps perspective */
+  .flip-container {
+    perspective: 1000px;
+  }
+  .flip-container.flipped .flipper {
+    transform: rotateY(180deg);
+  }
+  .flip-container.flipped-ie11 .flipper {
+    transform: rotateY(0);
+  }
+  .flip-container,
+  .front,
+  .back {
+    width: 100%;
+    height: 1250px;
+    background: #FFF;
+  }
+  .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  .front,
+  .back {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+  .flip-container.flipped-ie11 .front {
+    display: none;
+  }
+  .back {
+    transform: rotateY(180deg);
+  }
+  .flip-container.flipped-ie11 .back {
+    transform: rotateY(0);
+  }
+  .error {
+    background: #c00;
+    color: #FFF !important;
+    text-align: center;
+    padding: 5px 15px;
+  }
+  .zapsubmit {
+    position: relative;
+  }
+  .zapsubmit.spinning {
+      padding-right: 40px;
+  }
+  .zapsubmit.spinning:after {
+    content: '';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    box-shadow: 0px 0px 0 1px #FFFFFF;
+    border-radius: 50%;
+    animation: rotate360 .5s infinite linear, exist .1s forwards ease;
+  }
+  .zapsubmit.spinning:before {
+    content: "";
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    right: 6px;
+    top: 50%;
+    border: 2px #FFFFFF;
+    border-right: 3px solid #2d2d2d;
+    animation: rotate360 .5s infinite linear, exist .1s forwards ease ;
+  }
+  @keyframes rotate360 { 
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes exist { 
+    100% {
+      width: 15px;
+      height: 15px;
+      margin: -8px 5px 0 0;
+    }
+  }
+</style>
+
+
+<script>
+
+
+
+  $('#adjusters input').on('change',function(){
+    var div_toggle = $(this).val(),
+        $div_toggle_remove = $('.'+div_toggle+'_remove'),
+        $div_toggle_add = $('.'+div_toggle+'_add');
+    if(div_toggle == 'login') {
+      
+    }
+    if($(this).prop("checked")) {
+      $div_toggle_remove.addClass('hide');
+      $div_toggle_add.removeClass('hide');
+    } else {
+      $div_toggle_remove.removeClass('hide');
+      $div_toggle_add.addClass('hide');
+    }
+  });
+  function isIE() {
+    var ua = window.navigator.userAgent; //Check the userAgent property of the window.navigator object
+    var msie = ua.indexOf('MSIE '); // IE 10 or older
+    var trident = ua.indexOf('Trident/'); //IE 11
+    return (msie > 0 || trident > 0);
+  }
+  $('.flipme').on('click',function(e){
+    e.preventDefault();
+    if(isIE()){
+      $('.flip-container').toggleClass('flipped-ie11');
+    } else {
+      $('.flip-container').toggleClass('flipped');
+    }
+  });
+  $('.passwordreset-toggle').on('click',function(e){
+    e.preventDefault();
+    var target = $(this).attr('href');
+    $('#AccountLoginForm').toggleClass('hide');
+  });
+  $('#Email,#Email2').change(function(){
+    $('#Email_Delayed').val($(this).val());
+  });
+  $('#CreatePassword,#CreatePassword2').change(function(){
+    $('#Password_Delayed').val($(this).val());
+  });
+  $('form.integro').on('submit',function(e){
+    e.preventDefault();
+    var $error = $(this).closest('.form-vertical').find('.error'),
+    	$loadingbtn = $(this).find('.zapsubmit'),
+        integro_url = '//hook.integromat.com/77nxrbpf2lpa6qx8wjt0pvjmtj4mng2u';
+    if($(this).hasClass('integro2')) {
+      integro_url = '//hook.integromat.com/77nxrbpf2lpa6qx8wjt0pvjmtj4mng2u';
+    }
+    $error.hide().text('');
+    $loadingbtn.addClass('spinning');
+    $.ajax({
+      type: "POST",
+      url: integro_url,
+      data: $(this).find('input:not(".hide")','select:not(".hide")','textarea:not(".hide")').serialize(),
+      success: function(data) {
+        console.log(data);
+        $loadingbtn.removeClass('spinning');
+        if(data == 'Log In Ready') {
+          $('#delayedlogin form').submit();
+        } else if ( data == 'Redirect') {
+          window.location.replace("/pages/thanks-for-applying");
+        } else {
+          $error.show().text(data);
+        }
+      },
+      fail: function(jqXHR, textStatus) {
+        console.log(jqXHR + ' -- ' +textStatus);
+        $loadingbtn.removeClass('spinning');
+        alert('Process failed, please reload the page and try again');
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+     var logopart = $('.integro').find('#logo');
+});
+
+  $( ".uploaded" ).click(function(e) {
+    e.preventDefault();
+    $(".uploaded").html('Now Uploading...');
+    
+    var logopart = $('#create_customer').find('#logo');
+    
+    if(logopart.length > 0 && logopart.val() != '') {
+      var logosplitter = logopart.prop('files')[0],
+          timestamp = new Date().getTime(),
+          logoname = logosplitter.name,
+          encoded = encodeURIComponent(logoname),
+          form = this.$form,
+          t = this;
+
+      $.ajax({
+        url: 'https://content.dropboxapi.com/2/files/upload',
+        type: 'post',
+        data: logosplitter,
+        processData: false,
+        contentType: 'application/octet-stream',
+        headers: {
+          "Authorization": "Bearer 30BdVZ-HCuAAAAAAAAAADGvSZjcsg3TKcMBcxthEvZbuDLnG7C6LROp8RPMCeNPM",
+          "Dropbox-API-Arg": '{"path": "/' + timestamp + '/' + logoname + '","mode": "add"}'
+        },
+        success: function (d) {
+          console.log(d);
+          var str = d.path_display;
+          $('#create_customer').find('#file_name').val(str.split('/')[2]);
+          setTimeout(function(){
+            var datael = {
+              'path': d.path_display
+            };
+            $.ajax({
+              url: 'https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings',
+              type: 'post',
+              data: JSON.stringify(datael),
+              contentType: 'application/json',
+              headers: {
+                "Authorization": "Bearer 30BdVZ-HCuAAAAAAAAAADGvSZjcsg3TKcMBcxthEvZbuDLnG7C6LROp8RPMCeNPM"
+              },
+              success: function (data) {
+                console.log(data);
+                $('#create_customer').find('#file_link').val(data.url);
+                $(".uploaded").html('Thanks! We Got It.');
+                var params = {
+                  type: 'POST',
+                  url: '/cart/add.js',
+                  data: form.serialize(),
+                  dataType: 'json',
+                  success: $.proxy(function(line_item) {
+                    t.success(line_item);
+                  }, t),
+                  error: $.proxy(function(XMLHttpRequest, textStatus) {
+                    t.error(XMLHttpRequest, textStatus);
+                  }, t)
+                };
+
+                $.ajax(params);
+              },
+              error: function (data) {
+                console.log(data);
+              }
+            });
+          },1000);
+        },
+        error: function (d) {
+          alert('Your image name contains invalid characters');
+          console.log(d);
+        }
+      });
+    }; 
+    });
+</script>
